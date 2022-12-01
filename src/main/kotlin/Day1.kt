@@ -32,15 +32,15 @@ object Day1 {
                 tempSumCalories = 0
             }
         }
-        topThreeSumCalories.replaceIfBiggerThanSmallestInList(tempSumCalories)
-        return topThreeSumCalories.sum()
+        return topThreeSumCalories.replaceIfBiggerThanSmallestInList(tempSumCalories).sum()
     }
 
-    private fun MutableList<Int>.replaceIfBiggerThanSmallestInList(value: Int) {
+    private fun MutableList<Int>.replaceIfBiggerThanSmallestInList(value: Int) : MutableList<Int> {
         val minValueInList = this.min()
         if (value > minValueInList) {
             this[this.indexOf(minValueInList)] = value
         }
+        return this
     }
 
 }
