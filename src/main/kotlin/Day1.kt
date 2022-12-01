@@ -3,43 +3,41 @@ import java.io.File
 object Day1 {
 
     fun day1Part1(filename: String) : Int  {
-        var maxSum = 0
-        var tempSum = 0
+        var maxSumCalories = 0
+        var tempSumCalories = 0
         File(ClassLoader.getSystemResource(filename).file).forEachLine {
             if (it.isNotEmpty()) {
-                tempSum += it.toInt()
+                tempSumCalories += it.toInt()
             } else {
-                if (tempSum > maxSum) {
-                    maxSum = tempSum
+                if (tempSumCalories > maxSumCalories) {
+                    maxSumCalories = tempSumCalories
                 }
-                tempSum = 0
+                tempSumCalories = 0
             }
         }
-        if (tempSum > maxSum) {
-            maxSum = tempSum
+        if (tempSumCalories > maxSumCalories) {
+            maxSumCalories = tempSumCalories
         }
-        return maxSum
+        return maxSumCalories
     }
 
     fun day1Part2(filename: String) : Int {
-        val maxSum = mutableListOf(0, 0, 0)
-        var tempSum = 0
+        val topThreeSumCalories = mutableListOf(0, 0, 0)
+        var tempSumCalories = 0
         File(ClassLoader.getSystemResource(filename).file).forEachLine {
             if (it.isNotEmpty()) {
-                tempSum += it.toInt()
+                tempSumCalories += it.toInt()
             } else {
-                if (tempSum > maxSum.min()) {
-                    maxSum[maxSum.indexOf(maxSum.min())] = tempSum
+                if (tempSumCalories > topThreeSumCalories.min()) {
+                    topThreeSumCalories[topThreeSumCalories.indexOf(topThreeSumCalories.min())] = tempSumCalories
                 }
-                tempSum = 0
+                tempSumCalories = 0
             }
         }
-        if (tempSum > maxSum.min()) {
-            maxSum[maxSum.indexOf(maxSum.min())] = tempSum
+        if (tempSumCalories > topThreeSumCalories.min()) {
+            topThreeSumCalories[topThreeSumCalories.indexOf(topThreeSumCalories.min())] = tempSumCalories
         }
-        var result = 0
-        maxSum.forEach { result += it }
-        return result
+        return topThreeSumCalories.sum()
     }
 
 }
