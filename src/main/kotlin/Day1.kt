@@ -28,16 +28,19 @@ object Day1 {
             if (it.isNotEmpty()) {
                 tempSumCalories += it.toInt()
             } else {
-                if (tempSumCalories > topThreeSumCalories.min()) {
-                    topThreeSumCalories[topThreeSumCalories.indexOf(topThreeSumCalories.min())] = tempSumCalories
-                }
+                topThreeSumCalories.replaceIfBiggerThanSmallestInList(tempSumCalories)
                 tempSumCalories = 0
             }
         }
-        if (tempSumCalories > topThreeSumCalories.min()) {
-            topThreeSumCalories[topThreeSumCalories.indexOf(topThreeSumCalories.min())] = tempSumCalories
-        }
+        topThreeSumCalories.replaceIfBiggerThanSmallestInList(tempSumCalories)
         return topThreeSumCalories.sum()
+    }
+
+    private fun MutableList<Int>.replaceIfBiggerThanSmallestInList(value: Int) {
+        val minValueInList = this.min()
+        if (value > minValueInList) {
+            this[this.indexOf(minValueInList)] = value
+        }
     }
 
 }
