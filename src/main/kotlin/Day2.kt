@@ -7,7 +7,7 @@ object Day2 {
         File(ClassLoader.getSystemResource(filename).file).forEachLine {
             val scores = it.split(" ")
             score += getScore(scores[1].toCharArray()[0])
-            score += getWinnerScore(getHand(scores[0].toCharArray()[0]), getHand(scores[1].toCharArray()[0]))
+            score += getHand(scores[1].toCharArray()[0]).getResultAgainst(getHand(scores[0].toCharArray()[0])).score
         }
         return score
     }
@@ -18,51 +18,21 @@ object Day2 {
             val scores = it.split(" ")
             val opponentHand = getHand(scores[0].toCharArray()[0])
             when (val result = getResult(scores[1].toCharArray()[0]).score) {
-                getWinnerScore(opponentHand, Hand.ROCK) -> {
+                Hand.ROCK.getResultAgainst(opponentHand).score -> {
                     score += Hand.ROCK.score
                     score += result
                 }
-                getWinnerScore(opponentHand, Hand.PAPER) -> {
+                Hand.PAPER.getResultAgainst(opponentHand).score -> {
                     score += Hand.PAPER.score
                     score += result
                 }
-                getWinnerScore(opponentHand, Hand.SCISSOR) -> {
+                Hand.SCISSOR.getResultAgainst(opponentHand).score -> {
                     score += Hand.SCISSOR.score
                     score += result
                 }
             }
         }
         return score
-    }
-
-    private fun getWinnerScore(opponentHand: Hand, hand: Hand): Int {
-        return if (hand == opponentHand) {
-            Result.DRAW.score
-        } else {
-            when (hand) {
-                Hand.ROCK -> {
-                    if (opponentHand == Hand.PAPER) {
-                        Result.LOSE.score
-                    } else {
-                        Result.WIN.score
-                    }
-                }
-                Hand.PAPER -> {
-                    if (opponentHand == Hand.ROCK) {
-                        Result.WIN.score
-                    } else {
-                        Result.LOSE.score
-                    }
-                }
-                Hand.SCISSOR -> {
-                    if (opponentHand == Hand.ROCK) {
-                        Result.LOSE.score
-                    } else {
-                        Result.WIN.score
-                    }
-                }
-            }
-        }
     }
 
     private fun getHand(char: Char): Hand {
@@ -93,7 +63,22 @@ object Day2 {
     }
 
     private enum class Hand(val score: Int) {
-        ROCK(1), PAPER(2), SCISSOR(3)
+        ROCK(1), PAPER(2), SCISSOR(3);
+
+        fun getResultAgainst(opponentHand: Hand): Result {
+            return if (this == opponentHand) {
+                Result.DRAW
+            } else {
+                if (this == ROCK) {
+                    if (opponentHand == SCISSOR) Result.WIN else Result.LOSE
+                } else if (this == PAPER) {
+                    if (opponentHand == ROCK) Result.WIN else Result.LOSE
+                } else if (this == SCISSOR) {
+                    if (opponentHand == ROCK) Result.LOSE else Result.WIN
+                } else throw IllegalStateException()
+            }
+        }
+
     }
 
     private enum class Result(val score: Int) {
