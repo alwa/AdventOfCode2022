@@ -6,7 +6,7 @@ object Day2 {
         var score = 0
         File(ClassLoader.getSystemResource(filename).file).forEachLine {
             val scores = it.split(" ")
-            score += getScore(scores[1].toCharArray()[0])
+            score += getHand(scores[1].toCharArray()[0]).score
             score += getHand(scores[1].toCharArray()[0]).getResultAgainst(getHand(scores[0].toCharArray()[0])).score
         }
         return score
@@ -42,15 +42,6 @@ object Day2 {
             'X' -> Result.LOSE
             'Y' -> Result.DRAW
             'Z' -> Result.WIN
-            else -> throw IllegalStateException()
-        }
-    }
-
-    private fun getScore(char: Char): Int {
-        return when (char) {
-            'X' -> 1
-            'Y' -> 2
-            'Z' -> 3
             else -> throw IllegalStateException()
         }
     }
