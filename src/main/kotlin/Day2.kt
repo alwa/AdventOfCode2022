@@ -17,20 +17,19 @@ object Day2 {
         File(ClassLoader.getSystemResource(filename).file).forEachLine {
             val scores = it.split(" ")
             val opponentHand = getHand(scores[0].toCharArray()[0])
-            when (val result = getResult(scores[1].toCharArray()[0]).score) {
+            val result = getResult(scores[1].toCharArray()[0])
+            when (result.score) {
                 Hand.ROCK.getResultAgainst(opponentHand).score -> {
                     score += Hand.ROCK.score
-                    score += result
                 }
                 Hand.PAPER.getResultAgainst(opponentHand).score -> {
                     score += Hand.PAPER.score
-                    score += result
                 }
                 Hand.SCISSOR.getResultAgainst(opponentHand).score -> {
                     score += Hand.SCISSOR.score
-                    score += result
                 }
             }
+            score += result.score
         }
         return score
     }
