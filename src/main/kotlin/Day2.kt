@@ -16,16 +16,17 @@ object Day2 {
         var score = 0
         File(ClassLoader.getSystemResource(filename).file).forEachLine {
             val scores = it.split(" ")
+            val opponentHand = getHand(scores[0].toCharArray()[0])
             when (val result = getResult(scores[1].toCharArray()[0]).score) {
-                getWinnerScore(getHand(scores[0].toCharArray()[0]), Hand.ROCK) -> {
+                getWinnerScore(opponentHand, Hand.ROCK) -> {
                     score += Hand.ROCK.score
                     score += result
                 }
-                getWinnerScore(getHand(scores[0].toCharArray()[0]), Hand.PAPER) -> {
+                getWinnerScore(opponentHand, Hand.PAPER) -> {
                     score += Hand.PAPER.score
                     score += result
                 }
-                getWinnerScore(getHand(scores[0].toCharArray()[0]), Hand.SCISSOR) -> {
+                getWinnerScore(opponentHand, Hand.SCISSOR) -> {
                     score += Hand.SCISSOR.score
                     score += result
                 }
