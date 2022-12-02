@@ -19,15 +19,9 @@ object Day2 {
             val opponentHand = getHand(scores[0].toCharArray()[0])
             val result = getResult(scores[1].toCharArray()[0])
             when (result.score) {
-                Hand.ROCK.getResultAgainst(opponentHand).score -> {
-                    score += Hand.ROCK.score
-                }
-                Hand.PAPER.getResultAgainst(opponentHand).score -> {
-                    score += Hand.PAPER.score
-                }
-                Hand.SCISSOR.getResultAgainst(opponentHand).score -> {
-                    score += Hand.SCISSOR.score
-                }
+                Hand.ROCK.getResultAgainst(opponentHand).score -> score += Hand.ROCK.score
+                Hand.PAPER.getResultAgainst(opponentHand).score -> score += Hand.PAPER.score
+                Hand.SCISSOR.getResultAgainst(opponentHand).score -> score += Hand.SCISSOR.score
             }
             score += result.score
         }
