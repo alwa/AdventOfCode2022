@@ -37,28 +37,28 @@ object Day2 {
 
     private fun getWinnerScore(opponentHand: Hand, hand: Hand): Int {
         return if (hand == opponentHand) {
-            3
+            Result.DRAW.score
         } else {
             when (hand) {
                 Hand.ROCK -> {
                     if (opponentHand == Hand.PAPER) {
-                        0
+                        Result.LOSE.score
                     } else {
-                        6
+                        Result.WIN.score
                     }
                 }
                 Hand.PAPER -> {
                     if (opponentHand == Hand.ROCK) {
-                        6
+                        Result.WIN.score
                     } else {
-                        0
+                        Result.LOSE.score
                     }
                 }
                 Hand.SCISSOR -> {
                     if (opponentHand == Hand.ROCK) {
-                        0
+                        Result.LOSE.score
                     } else {
-                        6
+                        Result.WIN.score
                     }
                 }
             }
