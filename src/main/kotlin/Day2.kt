@@ -6,8 +6,10 @@ object Day2 {
         var score = 0
         File(ClassLoader.getSystemResource(filename).file).forEachLine {
             val scores = it.split(" ")
-            score += getHand(scores[1].toCharArray()[0]).score
-            score += getHand(scores[1].toCharArray()[0]).getResultAgainst(getHand(scores[0].toCharArray()[0])).score
+            val hand = getHand(scores[1].toCharArray()[0])
+            val opponentHand = getHand(scores[0].toCharArray()[0])
+            score += hand.score
+            score += hand.getResultAgainst(opponentHand).score
         }
         return score
     }
