@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     kotlin("jvm") version "1.7.21"
     application
+    id("org.sonarqube") version "3.5.0.2730"
 }
 
 group = "org.example"
@@ -26,4 +27,14 @@ tasks.withType<KotlinCompile> {
 
 application {
     mainClass.set("MainKt")
+}
+
+apply(plugin = "org.sonarqube")
+
+sonarqube {
+    properties {
+        property("sonar.projectKey", "alwa_AdventOfCode2022")
+        property("sonar.organization", "alwa")
+        property("sonar.host.url", "https://sonarcloud.io")
+    }
 }
