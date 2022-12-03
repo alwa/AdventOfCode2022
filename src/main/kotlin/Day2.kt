@@ -2,7 +2,7 @@ import java.io.File
 
 object Day2 {
 
-    fun day2Part1(filename: String): Int {
+    fun part1(filename: String): Int {
         var score = 0
         File(ClassLoader.getSystemResource(filename).file).forEachLine {
             val scores = it.split(" ")
@@ -14,7 +14,7 @@ object Day2 {
         return score
     }
 
-    fun day2Part2(filename: String): Int {
+    fun part2(filename: String): Int {
         var score = 0
         File(ClassLoader.getSystemResource(filename).file).forEachLine {
             val scores = it.split(" ")

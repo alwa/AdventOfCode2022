@@ -2,7 +2,7 @@ import java.io.File
 
 object Day1 {
 
-    fun day1Part1(filename: String) : Int  {
+    fun part1(filename: String) : Int  {
         var maxSumCalories = 0
         var tempSumCalories = 0
         File(ClassLoader.getSystemResource(filename).file).forEachLine {
@@ -21,7 +21,7 @@ object Day1 {
         return maxSumCalories
     }
 
-    fun day1Part2(filename: String) : Int {
+    fun part2(filename: String) : Int {
         val topThreeSumCalories = mutableListOf(0, 0, 0)
         var tempSumCalories = 0
         File(ClassLoader.getSystemResource(filename).file).forEachLine {
