@@ -7,4 +7,5 @@ fun main() {
     println("Part 2: ${Day2.part2("day2/input.txt")}")
     println("=Day 2=")
     println("Part 1: ${Day3.part1("day3/input.txt")}")
+    println("Part 2: ${Day3.part2("day3/input.txt")}")
 }

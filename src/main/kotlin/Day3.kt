@@ -19,7 +19,27 @@ object Day3 {
     }
 
     fun part2(filename: String): Int {
-        TODO()
+        var lineCounter = 0
+        val lines = mutableListOf("", "", "")
+        var score = 0
+        File(ClassLoader.getSystemResource(filename).file).forEachLine {
+            lines[lineCounter] = it
+            lineCounter++
+            if (lineCounter == 3) {
+                lineCounter = 0
+                loop@ for (character in lines[0]) {
+                    for (innerCharacter in lines[1]) {
+                        for (innerInnerCharacter in lines[2]) {
+                            if (character == innerCharacter && innerCharacter == innerInnerCharacter) {
+                                score += getPriority(character)
+                                break@loop
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return score
     }
 
     private fun getPriority(char: Char): Int {
