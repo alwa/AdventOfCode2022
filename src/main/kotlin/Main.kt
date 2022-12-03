@@ -4,4 +4,5 @@ fun main() {
     println("Part 2: ${Day1.part2("day1/input.txt")}")
     println("Part 2: ${Day2.part1("day2/input.txt")}")
     println("Part 2: ${Day2.part2("day2/input.txt")}")
+    println("Part 3: ${Day3.part1("day3/input.txt")}")
 }
