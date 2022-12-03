@@ -18,6 +18,10 @@ object Day3 {
         return score
     }
 
+    fun part2(filename: String): Int {
+        TODO()
+    }
+
     private fun getPriority(char: Char): Int {
         return if (char.isLowerCase()) {
             char.code - 96
