@@ -8,4 +8,6 @@ fun main() {
     println("=Day 3=")
     println("Part 1: ${Day3.part1("day3/input.txt")}")
     println("Part 2: ${Day3.part2("day3/input.txt")}")
+    println("=Day 4=")
+    println("Part 1: ${Day4.part1("day4/input.txt")}")
 }
