@@ -38,6 +38,6 @@ object Day4 {
         return Pair(startAndEnd[0].toInt(), startAndEnd[1].toInt())
     }
 
-}
+    private fun Pair<Int, Int>.toIntRange(): IntRange = first.rangeTo(second)
 
-private fun Pair<Int, Int>.toIntRange(): IntRange = first.rangeTo(second)
+}
