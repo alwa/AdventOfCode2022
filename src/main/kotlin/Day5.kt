@@ -5,8 +5,7 @@ import java.util.regex.Pattern
 object Day5 {
 
     fun part1(filename: String): String {
-        val numberOfColumns = getNumberOfStacks(filename)
-        val stacks = getInitializedStacks(numberOfColumns, filename)
+        val stacks = getParsedStacks(filename)
         File(ClassLoader.getSystemResource(filename).file).forEachLine {
             if (it.isMoveAction()) {
                 val lineParts = it.split(" ")
@@ -22,8 +21,7 @@ object Day5 {
     }
 
     fun part2(filename: String): String {
-        val numberOfColumns = getNumberOfStacks(filename)
-        val stacks = getInitializedStacks(numberOfColumns, filename)
+        val stacks = getParsedStacks(filename)
         File(ClassLoader.getSystemResource(filename).file).forEachLine {
             if (it.isMoveAction()) {
                 val lineParts = it.split(" ")
@@ -68,9 +66,10 @@ object Day5 {
         }
     }
 
-    private fun getInitializedStacks(numberOfColumns: Int, filename: String): List<Stack<Char>> {
+    private fun getParsedStacks(filename: String): List<Stack<Char>> {
+        val numberOfStacks = getNumberOfStacks(filename)
         val stacks: MutableList<Stack<Char>> = mutableListOf()
-        repeat(numberOfColumns) { stacks.add(Stack<Char>()) }
+        repeat(numberOfStacks) { stacks.add(Stack<Char>()) }
         val allFilteredLines: List<String> = getAllStackDefinitionLinesInReverseOrder(filename)
         for (it in allFilteredLines) {
             stacks.forEachIndexed { index, _ ->
@@ -85,13 +84,15 @@ object Day5 {
     private fun getAllStackDefinitionLinesInReverseOrder(filename: String): List<String> {
         val allLines: MutableList<String> = mutableListOf()
         File(ClassLoader.getSystemResource(filename).file).forEachLine {
-            if (!it.isMoveAction() && it.trim().isNotEmpty()) {
+            if (it.isStackDefinitionLine()) {
                 allLines.add(it)
             }
         }
         allLines.reverse()
         return allLines.toList()
     }
+
+    private fun String.isStackDefinitionLine() = !this.isMoveAction() && this.trim().isNotEmpty()
 
     private fun String.isMoveAction() = this.startsWith("move")
 
