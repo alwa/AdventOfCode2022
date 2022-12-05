@@ -80,10 +80,10 @@ object Day5 {
 
 }
 
-private class StackDefinitionParser{
+private class StackDefinitionParser : Parser<List<String>, List<Stack<Char>>> {
 
-    fun parse(lines: List<String>) : List<Stack<Char>> {
-        return lines.filter { line -> line.isStackDefinitionLine() }.getParsedStacks()
+    override fun parse(input: List<String>): List<Stack<Char>> {
+        return input.filter { line -> line.isStackDefinitionLine() }.getParsedStacks()
     }
 
     private fun List<String>.getParsedStacks(): List<Stack<Char>> {
@@ -118,9 +118,10 @@ private class StackDefinitionParser{
     }
 
 }
-private class MoveParser {
-    fun parse(line: String): MoveData {
-        val lineParts = line.split(" ")
+
+private class MoveParser : Parser<String, MoveData> {
+    override fun parse(input: String): MoveData {
+        val lineParts = input.split(" ")
         return MoveData(
             numberOfCrates = lineParts[1].toInt(), fromStack = lineParts[3].toInt(),
             toStack = lineParts[5].toInt()
