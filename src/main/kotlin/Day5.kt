@@ -101,14 +101,14 @@ object Day5 {
         return numberOfColumns
     }
 
-    private class CrateMover9000MoveStrategy : MoveStrategy {
+    private class CrateMover9000MoveStrategy : MoveStrategy<Char> {
         override fun move(stacks: List<Stack<Char>>, numberOfCrates: Int, fromStack: Int, toStack: Int) {
             stacks.move(numberToMove = numberOfCrates, toIndex = toStack - 1, fromIndex = fromStack - 1)
         }
 
     }
 
-    private class CrateMover9001MoveStrategy : MoveStrategy {
+    private class CrateMover9001MoveStrategy : MoveStrategy<Char> {
         override fun move(stacks: List<Stack<Char>>, numberOfCrates: Int, fromStack: Int, toStack: Int) {
             if (numberOfCrates == 1) {
                 stacks.move(numberToMove = numberOfCrates, toIndex = toStack - 1, fromIndex = fromStack - 1)
@@ -119,9 +119,9 @@ object Day5 {
 
     }
 
-    interface MoveStrategy {
+    interface MoveStrategy<T> {
 
-        fun move(stacks: List<Stack<Char>>, numberOfCrates: Int, fromStack: Int, toStack: Int)
+        fun move(stacks: List<Stack<T>>, numberOfCrates: Int, fromStack: Int, toStack: Int)
 
     }
 
@@ -140,6 +140,11 @@ private class MoveParser {
 
 private data class MoveData(val numberOfCrates: Int, val fromStack: Int, val toStack: Int)
 
-private fun List<Stack<Char>>.process(numberOfCrates: Int, fromStack: Int, toStack: Int, strategy: Day5.MoveStrategy) {
+private fun List<Stack<Char>>.process(
+    numberOfCrates: Int,
+    fromStack: Int,
+    toStack: Int,
+    strategy: Day5.MoveStrategy<Char>
+) {
     strategy.move(stacks = this@process, numberOfCrates = numberOfCrates, fromStack = fromStack, toStack = toStack)
 }
