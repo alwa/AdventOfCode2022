@@ -42,21 +42,13 @@ object Day5 {
         return stringBuilder.toString()
     }
 
-    private fun List<Stack<Char>>.move(
-        numberToMove: Int,
-        toIndex: Int,
-        fromIndex: Int
-    ) {
+    private fun List<Stack<Char>>.move(numberToMove: Int, toIndex: Int, fromIndex: Int) {
         repeat(numberToMove) {
             this[toIndex].push(this[fromIndex].pop())
         }
     }
 
-    private fun List<Stack<Char>>.multiMove(
-        numToMove: Int,
-        fromIndex: Int,
-        toIndex: Int
-    ) {
+    private fun List<Stack<Char>>.multiMove(numToMove: Int, fromIndex: Int, toIndex: Int) {
         val tempStack = Stack<Char>()
         repeat(numToMove) {
             tempStack.push(this[fromIndex].pop())
