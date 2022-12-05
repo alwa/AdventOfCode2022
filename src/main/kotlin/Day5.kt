@@ -1,5 +1,6 @@
 import java.io.File
 import java.util.*
+import java.util.regex.Pattern
 
 object Day5 {
 
@@ -103,15 +104,10 @@ object Day5 {
     private fun getNumberOfStacks(filename: String): Int {
         var numberOfColumns = 0
         File(ClassLoader.getSystemResource(filename).file).forEachLine {
-            var isLastCharDigit = false
             if (!it.isMoveAction()) {
-                for (char in it.toCharArray()) {
-                    if (char.isDigit() && !isLastCharDigit) {
-                        isLastCharDigit = true
-                        numberOfColumns++
-                    } else {
-                        isLastCharDigit = false
-                    }
+                val matcher = Pattern.compile("[\\d+]").matcher(it)
+                while (matcher.find()) {
+                    numberOfColumns++
                 }
             }
         }
