@@ -50,9 +50,9 @@ object Day5 {
         return result
     }
 
-    fun String.isStackDefinitionLine() = !this.isMoveAction() && this.trim().isNotEmpty()
+    internal fun String.isStackDefinitionLine() = !this.isMoveAction() && this.trim().isNotEmpty()
 
-    fun String.isMoveAction() = this.startsWith("move")
+    internal fun String.isMoveAction() = this.startsWith("move")
 
     private class CrateMover9000MoveStrategy : MoveStrategy<Char> {
         override fun move(stacks: List<Stack<Char>>, numberOfCrates: Int, fromStack: Int, toStack: Int) {
