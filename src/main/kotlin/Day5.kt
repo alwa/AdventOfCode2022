@@ -1,3 +1,5 @@
+import Day5.isMoveAction
+import Day5.isStackDefinitionLine
 import java.io.File
 import java.util.*
 import java.util.regex.Pattern
@@ -6,7 +8,7 @@ object Day5 {
 
     fun part1(filename: String): String {
         val lines = parseAllLines(filename)
-        val stacks = lines.filter { line -> line.isStackDefinitionLine() }.getParsedStacks()
+        val stacks = StackDefinitionParser().parse(lines)
         lines.filter { line -> line.isMoveAction() }.forEach { line ->
             val moveData = MoveParser().parse(line)
             stacks.process(moveData = moveData, strategy = CrateMover9000MoveStrategy())
@@ -16,7 +18,7 @@ object Day5 {
 
     fun part2(filename: String): String {
         val lines = parseAllLines(filename)
-        val stacks = lines.filter { line -> line.isStackDefinitionLine() }.getParsedStacks()
+        val stacks = StackDefinitionParser().parse(lines)
         lines.filter { line -> line.isMoveAction() }.forEach { line ->
             val moveData = MoveParser().parse(line)
             stacks.process(moveData = moveData, strategy = CrateMover9001MoveStrategy())
@@ -40,20 +42,6 @@ object Day5 {
         repeat(times = times) { this[toIndex].push(tempStack.pop()) }
     }
 
-    private fun List<String>.getParsedStacks(): List<Stack<Char>> {
-        val numberOfStacks = getParsedNumberOfStacks(this)
-        val stacks: MutableList<Stack<Char>> = mutableListOf()
-        repeat(numberOfStacks) { stacks.add(Stack<Char>()) }
-        for (line in this.reversed()) {
-            stacks.forEachIndexed { index, _ ->
-                if (line[1 + index * 4].isLetter()) {
-                    stacks[index].push(line[1 + index * 4])
-                }
-            }
-        }
-        return stacks.toList()
-    }
-
     private fun parseAllLines(filename: String): List<String> {
         val result: MutableList<String> = mutableListOf()
         File(ClassLoader.getSystemResource(filename).file).forEachLine { line ->
@@ -62,26 +50,9 @@ object Day5 {
         return result
     }
 
-    private fun String.isStackDefinitionLine() = !this.isMoveAction() && this.trim().isNotEmpty()
+    fun String.isStackDefinitionLine() = !this.isMoveAction() && this.trim().isNotEmpty()
 
-    private fun String.isMoveAction() = this.startsWith("move")
-
-    private fun getParsedNumberOfStacks(lines: List<String>): Int {
-        var count = 0
-        lines.filterNot { line -> line.isMoveAction() }.forEach { line ->
-            count += countStacks(line)
-        }
-        return count
-    }
-
-    private fun countStacks(line: String): Int {
-        var count = 0
-        val matcher = Pattern.compile("[\\d+]").matcher(line)
-        while (matcher.find()) {
-            count++
-        }
-        return count
-    }
+    fun String.isMoveAction() = this.startsWith("move")
 
     private class CrateMover9000MoveStrategy : MoveStrategy<Char> {
         override fun move(stacks: List<Stack<Char>>, numberOfCrates: Int, fromStack: Int, toStack: Int) {
@@ -109,6 +80,44 @@ object Day5 {
 
 }
 
+private class StackDefinitionParser{
+
+    fun parse(lines: List<String>) : List<Stack<Char>> {
+        return lines.filter { line -> line.isStackDefinitionLine() }.getParsedStacks()
+    }
+
+    private fun List<String>.getParsedStacks(): List<Stack<Char>> {
+        val numberOfStacks = getParsedNumberOfStacks()
+        val stacks: MutableList<Stack<Char>> = mutableListOf()
+        repeat(numberOfStacks) { stacks.add(Stack<Char>()) }
+        for (line in this.reversed()) {
+            stacks.forEachIndexed { index, _ ->
+                if (line[1 + index * 4].isLetter()) {
+                    stacks[index].push(line[1 + index * 4])
+                }
+            }
+        }
+        return stacks.toList()
+    }
+
+    private fun List<String>.getParsedNumberOfStacks(): Int {
+        var count = 0
+        this.filterNot { line -> line.isMoveAction() }.forEach { line ->
+            count += countStacks(line)
+        }
+        return count
+    }
+
+    private fun countStacks(line: String): Int {
+        var count = 0
+        val matcher = Pattern.compile("[\\d+]").matcher(line)
+        while (matcher.find()) {
+            count++
+        }
+        return count
+    }
+
+}
 private class MoveParser {
     fun parse(line: String): MoveData {
         val lineParts = line.split(" ")
