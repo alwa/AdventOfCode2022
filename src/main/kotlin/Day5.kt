@@ -9,10 +9,11 @@ object Day5 {
         File(ClassLoader.getSystemResource(filename).file).forEachLine {
             if (it.startsWith("move")) {
                 val lineParts = it.split(" ")
-                stacks.processUsingCrateMover9000(
+                stacks.process(
                     numberOfCrates = lineParts[1].toInt(),
                     fromStack = lineParts[3].toInt(),
-                    toStack = lineParts[5].toInt()
+                    toStack = lineParts[5].toInt(),
+                    strategy = CrateMover9000Strategy()
                 )
             }
         }
@@ -25,10 +26,12 @@ object Day5 {
         File(ClassLoader.getSystemResource(filename).file).forEachLine {
             if (it.startsWith("move")) {
                 val lineParts = it.split(" ")
-                stacks.processUsingCrateMover9001(
+                stacks.process(
                     numberOfCrates = lineParts[1].toInt(),
                     fromStack = lineParts[3].toInt(),
-                    toStack = lineParts[5].toInt())
+                    toStack = lineParts[5].toInt(),
+                    strategy = CrateMover9001Strategy()
+                )
             }
         }
         return getResult(stacks)
@@ -38,18 +41,6 @@ object Day5 {
         val stringBuilder: StringBuilder = StringBuilder()
         repeat(stacks.size) { i -> stringBuilder.append(stacks[i].pop()) }
         return stringBuilder.toString()
-    }
-
-    private fun List<Stack<Char>>.processUsingCrateMover9000(numberOfCrates: Int, fromStack: Int, toStack: Int) {
-        move(numberOfCrates, toStack - 1, fromStack - 1)
-    }
-
-    private fun List<Stack<Char>>.processUsingCrateMover9001(numberOfCrates: Int, fromStack: Int, toStack: Int) {
-        if (numberOfCrates == 1) {
-            move(numberOfCrates, toStack - 1, fromStack - 1)
-        } else {
-            multiMove(numberOfCrates, fromStack - 1, toStack - 1)
-        }
     }
 
     private fun List<Stack<Char>>.move(
@@ -122,4 +113,32 @@ object Day5 {
         return numberOfColumns
     }
 
+    private class CrateMover9000Strategy : MoveStrategy {
+        override fun move(stacks: List<Stack<Char>>, numberOfCrates: Int, fromStack: Int, toStack: Int) {
+            stacks.move(numberToMove = numberOfCrates, toIndex = toStack - 1, fromIndex = fromStack - 1)
+        }
+
+    }
+
+    private class CrateMover9001Strategy : MoveStrategy {
+        override fun move(stacks: List<Stack<Char>>, numberOfCrates: Int, fromStack: Int, toStack: Int) {
+            if (numberOfCrates == 1) {
+                stacks.move(numberToMove = numberOfCrates, toIndex = toStack - 1, fromIndex = fromStack - 1)
+            } else {
+                stacks.multiMove(numToMove = numberOfCrates, fromIndex = fromStack - 1, toIndex = toStack - 1)
+            }
+        }
+
+    }
+
+    interface MoveStrategy {
+
+        fun move(stacks: List<Stack<Char>>, numberOfCrates: Int, fromStack: Int, toStack: Int)
+
+    }
+
+}
+
+private fun List<Stack<Char>>.process(numberOfCrates: Int, fromStack: Int, toStack: Int, strategy: Day5.MoveStrategy) {
+    strategy.move(stacks = this@process, numberOfCrates = numberOfCrates, fromStack = fromStack, toStack = toStack)
 }
