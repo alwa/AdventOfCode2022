@@ -6,7 +6,7 @@ object Day5 {
 
     fun part1(filename: String): String {
         val lines = parseAllLines(filename)
-        val stacks = getParsedStacks(lines)
+        val stacks = lines.filter { line -> line.isStackDefinitionLine() }.getParsedStacks()
         lines.filter { line -> line.isMoveAction() }.forEach { line ->
             val moveData = MoveParser().parse(line)
             stacks.process(moveData = moveData, strategy = CrateMover9000MoveStrategy())
@@ -16,7 +16,7 @@ object Day5 {
 
     fun part2(filename: String): String {
         val lines = parseAllLines(filename)
-        val stacks = getParsedStacks(lines)
+        val stacks = lines.filter { line -> line.isStackDefinitionLine() }.getParsedStacks()
         lines.filter { line -> line.isMoveAction() }.forEach { line ->
             val moveData = MoveParser().parse(line)
             stacks.process(moveData = moveData, strategy = CrateMover9001MoveStrategy())
@@ -46,12 +46,11 @@ object Day5 {
         }
     }
 
-    private fun getParsedStacks(lines: List<String>): List<Stack<Char>> {
-        val numberOfStacks = getParsedNumberOfStacks(lines)
+    private fun List<String>.getParsedStacks(): List<Stack<Char>> {
+        val numberOfStacks = getParsedNumberOfStacks(this)
         val stacks: MutableList<Stack<Char>> = mutableListOf()
         repeat(numberOfStacks) { stacks.add(Stack<Char>()) }
-        val stackDefinitionLines: List<String> = lines.filter { line -> line.isStackDefinitionLine() }.reversed()
-        for (line in stackDefinitionLines) {
+        for (line in this.reversed()) {
             stacks.forEachIndexed { index, _ ->
                 if (line[1 + index * 4].isLetter()) {
                     stacks[index].push(line[1 + index * 4])
