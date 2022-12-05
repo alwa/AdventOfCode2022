@@ -6,9 +6,9 @@ object Day5 {
 
     fun part1(filename: String): String {
         val stacks = getParsedStacks(filename)
-        File(ClassLoader.getSystemResource(filename).file).forEachLine {
-            if (it.isMoveAction()) {
-                val moveData = MoveParser().parse(it)
+        File(ClassLoader.getSystemResource(filename).file).forEachLine { line ->
+            if (line.isMoveAction()) {
+                val moveData = MoveParser().parse(line)
                 stacks.process(
                     numberOfCrates = moveData.numberOfCrates,
                     fromStack = moveData.fromStack,
@@ -22,9 +22,9 @@ object Day5 {
 
     fun part2(filename: String): String {
         val stacks = getParsedStacks(filename)
-        File(ClassLoader.getSystemResource(filename).file).forEachLine {
-            if (it.isMoveAction()) {
-                val moveData = MoveParser().parse(it)
+        File(ClassLoader.getSystemResource(filename).file).forEachLine { line ->
+            if (line.isMoveAction()) {
+                val moveData = MoveParser().parse(line)
                 stacks.process(
                     numberOfCrates = moveData.numberOfCrates,
                     fromStack = moveData.fromStack,
@@ -62,11 +62,11 @@ object Day5 {
         val numberOfStacks = getNumberOfStacks(filename)
         val stacks: MutableList<Stack<Char>> = mutableListOf()
         repeat(numberOfStacks) { stacks.add(Stack<Char>()) }
-        val allFilteredLines: List<String> = getAllStackDefinitionLinesInReverseOrder(filename)
-        for (it in allFilteredLines) {
+        val stackDefinitionLines: List<String> = getAllStackDefinitionLinesInReverseOrder(filename)
+        for (line in stackDefinitionLines) {
             stacks.forEachIndexed { index, _ ->
-                if (it[1 + index * 4].isLetter()) {
-                    stacks[index].push(it[1 + index * 4])
+                if (line[1 + index * 4].isLetter()) {
+                    stacks[index].push(line[1 + index * 4])
                 }
             }
         }
@@ -90,9 +90,9 @@ object Day5 {
 
     private fun getNumberOfStacks(filename: String): Int {
         var numberOfColumns = 0
-        File(ClassLoader.getSystemResource(filename).file).forEachLine {
-            if (!it.isMoveAction()) {
-                val matcher = Pattern.compile("[\\d+]").matcher(it)
+        File(ClassLoader.getSystemResource(filename).file).forEachLine { line ->
+            if (!line.isMoveAction()) {
+                val matcher = Pattern.compile("[\\d+]").matcher(line)
                 while (matcher.find()) {
                     numberOfColumns++
                 }
