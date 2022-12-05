@@ -49,7 +49,7 @@ object Day5 {
     }
 
     private fun getParsedStacks(filename: String): List<Stack<Char>> {
-        val numberOfStacks = getNumberOfStacks(filename)
+        val numberOfStacks = getParsedNumberOfStacks(filename)
         val stacks: MutableList<Stack<Char>> = mutableListOf()
         repeat(numberOfStacks) { stacks.add(Stack<Char>()) }
         val stackDefinitionLines: List<String> = getAllStackDefinitionLinesInReverseOrder(filename)
@@ -78,17 +78,23 @@ object Day5 {
 
     private fun String.isMoveAction() = this.startsWith("move")
 
-    private fun getNumberOfStacks(filename: String): Int {
-        var numberOfColumns = 0
+    private fun getParsedNumberOfStacks(filename: String): Int {
+        var count = 0
         File(ClassLoader.getSystemResource(filename).file).forEachLine { line ->
             if (!line.isMoveAction()) {
-                val matcher = Pattern.compile("[\\d+]").matcher(line)
-                while (matcher.find()) {
-                    numberOfColumns++
-                }
+                count += countStacks(line)
             }
         }
-        return numberOfColumns
+        return count
+    }
+
+    private fun countStacks(line: String): Int {
+        var count = 0
+        val matcher = Pattern.compile("[\\d+]").matcher(line)
+        while (matcher.find()) {
+            count++
+        }
+        return count
     }
 
     private class CrateMover9000MoveStrategy : MoveStrategy<Char> {
