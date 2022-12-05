@@ -8,11 +8,11 @@ object Day5 {
         val stacks = getParsedStacks(filename)
         File(ClassLoader.getSystemResource(filename).file).forEachLine {
             if (it.isMoveAction()) {
-                val lineParts = it.split(" ")
+                val moveData = MoveParser().parse(it)
                 stacks.process(
-                    numberOfCrates = lineParts[1].toInt(),
-                    fromStack = lineParts[3].toInt(),
-                    toStack = lineParts[5].toInt(),
+                    numberOfCrates = moveData.numberOfCrates,
+                    fromStack = moveData.fromStack,
+                    toStack = moveData.toStack,
                     strategy = CrateMover9000MoveStrategy()
                 )
             }
@@ -24,11 +24,11 @@ object Day5 {
         val stacks = getParsedStacks(filename)
         File(ClassLoader.getSystemResource(filename).file).forEachLine {
             if (it.isMoveAction()) {
-                val lineParts = it.split(" ")
+                val moveData = MoveParser().parse(it)
                 stacks.process(
-                    numberOfCrates = lineParts[1].toInt(),
-                    fromStack = lineParts[3].toInt(),
-                    toStack = lineParts[5].toInt(),
+                    numberOfCrates = moveData.numberOfCrates,
+                    fromStack = moveData.fromStack,
+                    toStack = moveData.toStack,
                     strategy = CrateMover9001MoveStrategy()
                 )
             }
@@ -134,6 +134,19 @@ object Day5 {
     }
 
 }
+
+private class MoveParser {
+    fun parse(line: String): MoveData {
+        val lineParts = line.split(" ")
+        return MoveData(
+            numberOfCrates = lineParts[1].toInt(), fromStack = lineParts[3].toInt(),
+            toStack = lineParts[5].toInt()
+        )
+    }
+
+}
+
+private data class MoveData(val numberOfCrates: Int, val fromStack: Int, val toStack: Int)
 
 private fun List<Stack<Char>>.process(numberOfCrates: Int, fromStack: Int, toStack: Int, strategy: Day5.MoveStrategy) {
     strategy.move(stacks = this@process, numberOfCrates = numberOfCrates, fromStack = fromStack, toStack = toStack)
