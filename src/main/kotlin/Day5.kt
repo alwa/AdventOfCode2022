@@ -5,23 +5,21 @@ import java.util.regex.Pattern
 object Day5 {
 
     fun part1(filename: String): String {
-        val stacks = getParsedStacks(filename)
-        File(ClassLoader.getSystemResource(filename).file).forEachLine { line ->
-            if (line.isMoveAction()) {
-                val moveData = MoveParser().parse(line)
-                stacks.process(moveData = moveData, strategy = CrateMover9000MoveStrategy())
-            }
+        val lines = parseAllLines(filename)
+        val stacks = getParsedStacks(lines)
+        lines.filter { line -> line.isMoveAction() }.forEach { line ->
+            val moveData = MoveParser().parse(line)
+            stacks.process(moveData = moveData, strategy = CrateMover9000MoveStrategy())
         }
         return getResult(stacks)
     }
 
     fun part2(filename: String): String {
-        val stacks = getParsedStacks(filename)
-        File(ClassLoader.getSystemResource(filename).file).forEachLine { line ->
-            if (line.isMoveAction()) {
-                val moveData = MoveParser().parse(line)
-                stacks.process(moveData = moveData, strategy = CrateMover9001MoveStrategy())
-            }
+        val lines = parseAllLines(filename)
+        val stacks = getParsedStacks(lines)
+        lines.filter { line -> line.isMoveAction() }.forEach { line ->
+            val moveData = MoveParser().parse(line)
+            stacks.process(moveData = moveData, strategy = CrateMover9001MoveStrategy())
         }
         return getResult(stacks)
     }
@@ -48,11 +46,11 @@ object Day5 {
         }
     }
 
-    private fun getParsedStacks(filename: String): List<Stack<Char>> {
-        val numberOfStacks = getParsedNumberOfStacks(filename)
+    private fun getParsedStacks(lines: List<String>): List<Stack<Char>> {
+        val numberOfStacks = getParsedNumberOfStacks(lines)
         val stacks: MutableList<Stack<Char>> = mutableListOf()
         repeat(numberOfStacks) { stacks.add(Stack<Char>()) }
-        val stackDefinitionLines: List<String> = getAllStackDefinitionLinesInReverseOrder(filename)
+        val stackDefinitionLines: List<String> = lines.filter { line -> line.isStackDefinitionLine() }.reversed()
         for (line in stackDefinitionLines) {
             stacks.forEachIndexed { index, _ ->
                 if (line[1 + index * 4].isLetter()) {
@@ -63,27 +61,22 @@ object Day5 {
         return stacks.toList()
     }
 
-    private fun getAllStackDefinitionLinesInReverseOrder(filename: String): List<String> {
-        val allLines: MutableList<String> = mutableListOf()
-        File(ClassLoader.getSystemResource(filename).file).forEachLine {
-            if (it.isStackDefinitionLine()) {
-                allLines.add(it)
-            }
+    private fun parseAllLines(filename: String): List<String> {
+        val result: MutableList<String> = mutableListOf()
+        File(ClassLoader.getSystemResource(filename).file).forEachLine { line ->
+            result.add(line)
         }
-        allLines.reverse()
-        return allLines.toList()
+        return result
     }
 
     private fun String.isStackDefinitionLine() = !this.isMoveAction() && this.trim().isNotEmpty()
 
     private fun String.isMoveAction() = this.startsWith("move")
 
-    private fun getParsedNumberOfStacks(filename: String): Int {
+    private fun getParsedNumberOfStacks(lines: List<String>): Int {
         var count = 0
-        File(ClassLoader.getSystemResource(filename).file).forEachLine { line ->
-            if (!line.isMoveAction()) {
-                count += countStacks(line)
-            }
+        lines.filterNot { line -> line.isMoveAction() }.forEach { line ->
+            count += countStacks(line)
         }
         return count
     }
