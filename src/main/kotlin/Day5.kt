@@ -1,5 +1,5 @@
 import java.io.File
-import java.util.Stack
+import java.util.*
 
 object Day5 {
 
@@ -70,6 +70,24 @@ object Day5 {
     private fun getInitializedStacks(numberOfColumns: Int, filename: String): List<Stack<Char>> {
         val stacks: MutableList<Stack<Char>> = mutableListOf()
         repeat(numberOfColumns) { stacks.add(Stack<Char>()) }
+        val allFilteredLines: List<String> = getAllStackDefinitionLinesInReverseOrder(filename)
+        for (it in allFilteredLines) {
+            stacks.forEachIndexed { index, _ ->
+                if (index == 0) {
+                    if (it[1].isLetter()) {
+                        stacks[0].push(it[1])
+                    }
+                } else {
+                    if (it[1 + index * 4].isLetter()) {
+                        stacks[index].push(it[1 + index * 4])
+                    }
+                }
+            }
+        }
+        return stacks.toList()
+    }
+
+    private fun getAllStackDefinitionLinesInReverseOrder(filename: String): List<String> {
         val allLines: MutableList<String> = mutableListOf()
         File(ClassLoader.getSystemResource(filename).file).forEachLine {
             if (!it.startsWith("move") && it.trim().isNotEmpty()) {
@@ -77,22 +95,7 @@ object Day5 {
             }
         }
         allLines.reverse()
-        for (it in allLines) {
-            if (!it.startsWith("move") && it.trim().isNotEmpty()) {
-                stacks.forEachIndexed { index, _ ->
-                    if (index == 0) {
-                        if (it[1].isLetter()) {
-                            stacks[0].push(it[1])
-                        }
-                    } else {
-                        if (it[1 + index * 4].isLetter()) {
-                            stacks[index].push(it[1 + index * 4])
-                        }
-                    }
-                }
-            }
-        }
-        return stacks.toList()
+        return allLines.toList()
     }
 
     private fun getNumberOfStacks(filename: String): Int {
