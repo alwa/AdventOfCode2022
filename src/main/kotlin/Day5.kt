@@ -9,12 +9,7 @@ object Day5 {
         File(ClassLoader.getSystemResource(filename).file).forEachLine { line ->
             if (line.isMoveAction()) {
                 val moveData = MoveParser().parse(line)
-                stacks.process(
-                    numberOfCrates = moveData.numberOfCrates,
-                    fromStack = moveData.fromStack,
-                    toStack = moveData.toStack,
-                    strategy = CrateMover9000MoveStrategy()
-                )
+                stacks.process(moveData = moveData, strategy = CrateMover9000MoveStrategy())
             }
         }
         return getResult(stacks)
@@ -25,12 +20,7 @@ object Day5 {
         File(ClassLoader.getSystemResource(filename).file).forEachLine { line ->
             if (line.isMoveAction()) {
                 val moveData = MoveParser().parse(line)
-                stacks.process(
-                    numberOfCrates = moveData.numberOfCrates,
-                    fromStack = moveData.fromStack,
-                    toStack = moveData.toStack,
-                    strategy = CrateMover9001MoveStrategy()
-                )
+                stacks.process(moveData = moveData, strategy = CrateMover9001MoveStrategy())
             }
         }
         return getResult(stacks)
@@ -141,10 +131,13 @@ private class MoveParser {
 private data class MoveData(val numberOfCrates: Int, val fromStack: Int, val toStack: Int)
 
 private fun List<Stack<Char>>.process(
-    numberOfCrates: Int,
-    fromStack: Int,
-    toStack: Int,
+    moveData: MoveData,
     strategy: Day5.MoveStrategy<Char>
 ) {
-    strategy.move(stacks = this@process, numberOfCrates = numberOfCrates, fromStack = fromStack, toStack = toStack)
+    strategy.move(
+        stacks = this@process,
+        numberOfCrates = moveData.numberOfCrates,
+        fromStack = moveData.fromStack,
+        toStack = moveData.toStack
+    )
 }
