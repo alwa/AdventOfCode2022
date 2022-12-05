@@ -14,7 +14,7 @@ object Day5 {
                     numberOfCrates = lineParts[1].toInt(),
                     fromStack = lineParts[3].toInt(),
                     toStack = lineParts[5].toInt(),
-                    strategy = CrateMover9000Strategy()
+                    strategy = CrateMover9000MoveStrategy()
                 )
             }
         }
@@ -31,7 +31,7 @@ object Day5 {
                     numberOfCrates = lineParts[1].toInt(),
                     fromStack = lineParts[3].toInt(),
                     toStack = lineParts[5].toInt(),
-                    strategy = CrateMover9001Strategy()
+                    strategy = CrateMover9001MoveStrategy()
                 )
             }
         }
@@ -114,14 +114,14 @@ object Day5 {
         return numberOfColumns
     }
 
-    private class CrateMover9000Strategy : MoveStrategy {
+    private class CrateMover9000MoveStrategy : MoveStrategy {
         override fun move(stacks: List<Stack<Char>>, numberOfCrates: Int, fromStack: Int, toStack: Int) {
             stacks.move(numberToMove = numberOfCrates, toIndex = toStack - 1, fromIndex = fromStack - 1)
         }
 
     }
 
-    private class CrateMover9001Strategy : MoveStrategy {
+    private class CrateMover9001MoveStrategy : MoveStrategy {
         override fun move(stacks: List<Stack<Char>>, numberOfCrates: Int, fromStack: Int, toStack: Int) {
             if (numberOfCrates == 1) {
                 stacks.move(numberToMove = numberOfCrates, toIndex = toStack - 1, fromIndex = fromStack - 1)
