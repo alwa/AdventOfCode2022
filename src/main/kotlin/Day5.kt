@@ -7,7 +7,7 @@ object Day5 {
         val numberOfColumns = getNumberOfStacks(filename)
         val stacks = getInitializedStacks(numberOfColumns, filename)
         File(ClassLoader.getSystemResource(filename).file).forEachLine {
-            if (it.startsWith("move")) {
+            if (it.isMoveAction()) {
                 val lineParts = it.split(" ")
                 stacks.process(
                     numberOfCrates = lineParts[1].toInt(),
@@ -24,7 +24,7 @@ object Day5 {
         val numberOfColumns = getNumberOfStacks(filename)
         val stacks = getInitializedStacks(numberOfColumns, filename)
         File(ClassLoader.getSystemResource(filename).file).forEachLine {
-            if (it.startsWith("move")) {
+            if (it.isMoveAction()) {
                 val lineParts = it.split(" ")
                 stacks.process(
                     numberOfCrates = lineParts[1].toInt(),
@@ -90,7 +90,7 @@ object Day5 {
     private fun getAllStackDefinitionLinesInReverseOrder(filename: String): List<String> {
         val allLines: MutableList<String> = mutableListOf()
         File(ClassLoader.getSystemResource(filename).file).forEachLine {
-            if (!it.startsWith("move") && it.trim().isNotEmpty()) {
+            if (!it.isMoveAction() && it.trim().isNotEmpty()) {
                 allLines.add(it)
             }
         }
@@ -98,11 +98,13 @@ object Day5 {
         return allLines.toList()
     }
 
+    private fun String.isMoveAction() = this.startsWith("move")
+
     private fun getNumberOfStacks(filename: String): Int {
         var numberOfColumns = 0
         File(ClassLoader.getSystemResource(filename).file).forEachLine {
             var isLastCharDigit = false
-            if (!it.startsWith("move")) {
+            if (!it.isMoveAction()) {
                 for (char in it.toCharArray()) {
                     if (char.isDigit() && !isLastCharDigit) {
                         isLastCharDigit = true
