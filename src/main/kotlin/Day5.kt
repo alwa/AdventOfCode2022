@@ -26,6 +26,10 @@ object Day5 {
         return getResult(stacks)
     }
 
+    internal fun String.isStackDefinitionLine() = !this.isMoveAction() && this.trim().isNotEmpty()
+
+    internal fun String.isMoveAction() = this.startsWith("move")
+
     private fun getResult(stacks: List<Stack<Char>>): String {
         val stringBuilder: StringBuilder = StringBuilder()
         repeat(stacks.size) { i -> stringBuilder.append(stacks[i].pop()) }
@@ -49,10 +53,6 @@ object Day5 {
         }
         return result
     }
-
-    internal fun String.isStackDefinitionLine() = !this.isMoveAction() && this.trim().isNotEmpty()
-
-    internal fun String.isMoveAction() = this.startsWith("move")
 
     private class CrateMover9000MoveStrategy : MoveStrategy<Char> {
         override fun move(stacks: List<Stack<Char>>, numberOfCrates: Int, fromStack: Int, toStack: Int) {
