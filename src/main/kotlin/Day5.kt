@@ -74,14 +74,8 @@ object Day5 {
         val allFilteredLines: List<String> = getAllStackDefinitionLinesInReverseOrder(filename)
         for (it in allFilteredLines) {
             stacks.forEachIndexed { index, _ ->
-                if (index == 0) {
-                    if (it[1].isLetter()) {
-                        stacks[0].push(it[1])
-                    }
-                } else {
-                    if (it[1 + index * 4].isLetter()) {
-                        stacks[index].push(it[1 + index * 4])
-                    }
+                if (it[1 + index * 4].isLetter()) {
+                    stacks[index].push(it[1 + index * 4])
                 }
             }
         }
