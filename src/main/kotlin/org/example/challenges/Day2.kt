@@ -1,3 +1,5 @@
+package org.example.challenges
+
 import java.io.File
 
 object Day2 {

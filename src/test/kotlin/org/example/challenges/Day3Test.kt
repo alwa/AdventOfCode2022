@@ -1,3 +1,6 @@
+package org.example.challenges
+
+import org.example.challenges.Day3
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 

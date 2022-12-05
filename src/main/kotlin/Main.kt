@@ -1,3 +1,5 @@
+import org.example.challenges.*
+
 fun main() {
     println("=Day 1=")
     println("Part 1: ${Day1.part1("day1/input.txt")}")

@@ -1,5 +1,6 @@
-import Day5.isMoveAction
-import Day5.isStackDefinitionLine
+package org.example.challenges
+
+import org.example.Parser
 import java.io.File
 import java.util.*
 import java.util.regex.Pattern
@@ -78,68 +79,69 @@ object Day5 {
 
     }
 
-}
+    private class StackDefinitionParser : Parser<List<String>, List<Stack<Char>>> {
 
-private class StackDefinitionParser : Parser<List<String>, List<Stack<Char>>> {
+        override fun parse(input: List<String>): List<Stack<Char>> {
+            return input.filter { line -> line.isStackDefinitionLine() }.getParsedStacks()
+        }
 
-    override fun parse(input: List<String>): List<Stack<Char>> {
-        return input.filter { line -> line.isStackDefinitionLine() }.getParsedStacks()
-    }
-
-    private fun List<String>.getParsedStacks(): List<Stack<Char>> {
-        val numberOfStacks = getParsedNumberOfStacks()
-        val stacks: MutableList<Stack<Char>> = mutableListOf()
-        repeat(numberOfStacks) { stacks.add(Stack<Char>()) }
-        for (line in this.reversed()) {
-            stacks.forEachIndexed { index, _ ->
-                if (line[1 + index * 4].isLetter()) {
-                    stacks[index].push(line[1 + index * 4])
+        private fun List<String>.getParsedStacks(): List<Stack<Char>> {
+            val numberOfStacks = getParsedNumberOfStacks()
+            val stacks: MutableList<Stack<Char>> = mutableListOf()
+            repeat(numberOfStacks) { stacks.add(Stack<Char>()) }
+            for (line in this.reversed()) {
+                stacks.forEachIndexed { index, _ ->
+                    if (line[1 + index * 4].isLetter()) {
+                        stacks[index].push(line[1 + index * 4])
+                    }
                 }
             }
+            return stacks.toList()
         }
-        return stacks.toList()
+
+        private fun List<String>.getParsedNumberOfStacks(): Int {
+            var count = 0
+            this.filterNot { line -> line.isMoveAction() }.forEach { line ->
+                count += countStacks(line)
+            }
+            return count
+        }
+
+        private fun countStacks(line: String): Int {
+            var count = 0
+            val matcher = Pattern.compile("[\\d+]").matcher(line)
+            while (matcher.find()) {
+                count++
+            }
+            return count
+        }
+
     }
 
-    private fun List<String>.getParsedNumberOfStacks(): Int {
-        var count = 0
-        this.filterNot { line -> line.isMoveAction() }.forEach { line ->
-            count += countStacks(line)
+    private class MoveParser : Parser<String, MoveData> {
+        override fun parse(input: String): MoveData {
+            val lineParts = input.split(" ")
+            return MoveData(
+                numberOfCrates = lineParts[1].toInt(), fromStack = lineParts[3].toInt(),
+                toStack = lineParts[5].toInt()
+            )
         }
-        return count
+
     }
 
-    private fun countStacks(line: String): Int {
-        var count = 0
-        val matcher = Pattern.compile("[\\d+]").matcher(line)
-        while (matcher.find()) {
-            count++
-        }
-        return count
-    }
+    private data class MoveData(val numberOfCrates: Int, val fromStack: Int, val toStack: Int)
 
-}
-
-private class MoveParser : Parser<String, MoveData> {
-    override fun parse(input: String): MoveData {
-        val lineParts = input.split(" ")
-        return MoveData(
-            numberOfCrates = lineParts[1].toInt(), fromStack = lineParts[3].toInt(),
-            toStack = lineParts[5].toInt()
+    private fun List<Stack<Char>>.process(
+        moveData: MoveData,
+        strategy: Day5.MoveStrategy<Char>
+    ) {
+        strategy.move(
+            stacks = this@process,
+            numberOfCrates = moveData.numberOfCrates,
+            fromStack = moveData.fromStack,
+            toStack = moveData.toStack
         )
     }
 
-}
 
-private data class MoveData(val numberOfCrates: Int, val fromStack: Int, val toStack: Int)
-
-private fun List<Stack<Char>>.process(
-    moveData: MoveData,
-    strategy: Day5.MoveStrategy<Char>
-) {
-    strategy.move(
-        stacks = this@process,
-        numberOfCrates = moveData.numberOfCrates,
-        fromStack = moveData.fromStack,
-        toStack = moveData.toStack
-    )
 }
