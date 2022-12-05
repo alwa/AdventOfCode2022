@@ -30,20 +30,14 @@ object Day5 {
         return stringBuilder.toString()
     }
 
-    private fun List<Stack<Char>>.move(numberToMove: Int, toIndex: Int, fromIndex: Int) {
-        repeat(numberToMove) {
-            this[toIndex].push(this[fromIndex].pop())
-        }
+    private fun List<Stack<Char>>.move(times: Int, toIndex: Int, fromIndex: Int) {
+        repeat(times = times) { this[toIndex].push(this[fromIndex].pop()) }
     }
 
-    private fun List<Stack<Char>>.multiMove(numToMove: Int, fromIndex: Int, toIndex: Int) {
+    private fun List<Stack<Char>>.multiMove(times: Int, fromIndex: Int, toIndex: Int) {
         val tempStack = Stack<Char>()
-        repeat(numToMove) {
-            tempStack.push(this[fromIndex].pop())
-        }
-        repeat(numToMove) {
-            this[toIndex].push(tempStack.pop())
-        }
+        repeat(times = times) { tempStack.push(this[fromIndex].pop()) }
+        repeat(times = times) { this[toIndex].push(tempStack.pop()) }
     }
 
     private fun List<String>.getParsedStacks(): List<Stack<Char>> {
@@ -91,7 +85,7 @@ object Day5 {
 
     private class CrateMover9000MoveStrategy : MoveStrategy<Char> {
         override fun move(stacks: List<Stack<Char>>, numberOfCrates: Int, fromStack: Int, toStack: Int) {
-            stacks.move(numberToMove = numberOfCrates, toIndex = toStack - 1, fromIndex = fromStack - 1)
+            stacks.move(times = numberOfCrates, toIndex = toStack - 1, fromIndex = fromStack - 1)
         }
 
     }
@@ -99,9 +93,9 @@ object Day5 {
     private class CrateMover9001MoveStrategy : MoveStrategy<Char> {
         override fun move(stacks: List<Stack<Char>>, numberOfCrates: Int, fromStack: Int, toStack: Int) {
             if (numberOfCrates == 1) {
-                stacks.move(numberToMove = numberOfCrates, toIndex = toStack - 1, fromIndex = fromStack - 1)
+                stacks.move(times = numberOfCrates, toIndex = toStack - 1, fromIndex = fromStack - 1)
             } else {
-                stacks.multiMove(numToMove = numberOfCrates, fromIndex = fromStack - 1, toIndex = toStack - 1)
+                stacks.multiMove(times = numberOfCrates, fromIndex = fromStack - 1, toIndex = toStack - 1)
             }
         }
 
