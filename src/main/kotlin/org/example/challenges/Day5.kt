@@ -1,6 +1,6 @@
 package org.example.challenges
 
-import org.example.Parser
+import org.example.util.Parser
 import java.io.File
 import java.util.*
 import java.util.regex.Pattern
