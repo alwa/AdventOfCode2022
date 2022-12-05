@@ -7,21 +7,42 @@ object Day5 {
         val numberOfColumns = getNumberOfStacks(filename)
         val stacks = getInitializedStacks(numberOfColumns, filename)
         File(ClassLoader.getSystemResource(filename).file).forEachLine {
-            stacks.process(it)
+            stacks.process(line = it, multiMove = false)
         }
         val stringBuilder: StringBuilder = StringBuilder()
         repeat(stacks.size) { i -> stringBuilder.append(stacks[i].pop()) }
         return stringBuilder.toString()
     }
 
-    private fun List<Stack<Char>>.process(line: String) {
+    fun part2(filename: String): String {
+        val numberOfColumns = getNumberOfStacks(filename)
+        val stacks = getInitializedStacks(numberOfColumns, filename)
+        File(ClassLoader.getSystemResource(filename).file).forEachLine {
+            stacks.process(line = it, multiMove = true)
+        }
+        val stringBuilder: StringBuilder = StringBuilder()
+        repeat(stacks.size) { i -> stringBuilder.append(stacks[i].pop()) }
+        return stringBuilder.toString()
+    }
+
+    private fun List<Stack<Char>>.process(line: String, multiMove: Boolean) {
         if (line.startsWith("move")) {
             val parts = line.split(" ")
             val numberToMove = parts[1].toInt()
             val fromStack = parts[3].toInt()
             val toStack = parts[5].toInt()
-            repeat(numberToMove) {
-                this[toStack - 1].push(this[fromStack - 1].pop())
+            if (multiMove && numberToMove > 1) {
+                val tempStack = Stack<Char>()
+                repeat(numberToMove) {
+                    tempStack.push(this[fromStack - 1].pop())
+                }
+                repeat(numberToMove) {
+                    this[toStack - 1].push(tempStack.pop())
+                }
+            } else {
+                repeat(numberToMove) {
+                    this[toStack - 1].push(this[fromStack - 1].pop())
+                }
             }
         }
     }

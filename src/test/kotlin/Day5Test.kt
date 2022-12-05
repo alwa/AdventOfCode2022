@@ -8,4 +8,9 @@ class Day5Test {
         assertEquals("CMZ", Day5.part1("day5/testinput.txt"))
     }
 
+    @Test
+    fun `Part 2`() {
+        assertEquals("MCD", Day5.part2("day5/testinput.txt"))
+    }
+
 }
