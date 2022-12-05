@@ -8,12 +8,15 @@ object Day5 {
         val stacks = getInitializedStacks(numberOfColumns, filename)
         File(ClassLoader.getSystemResource(filename).file).forEachLine {
             if (it.startsWith("move")) {
-                stacks.processCrateMover9000(line = it)
+                val lineParts = it.split(" ")
+                stacks.processUsingCrateMover9000(
+                    numberOfCrates = lineParts[1].toInt(),
+                    fromStack = lineParts[3].toInt(),
+                    toStack = lineParts[5].toInt()
+                )
             }
         }
-        val stringBuilder: StringBuilder = StringBuilder()
-        repeat(stacks.size) { i -> stringBuilder.append(stacks[i].pop()) }
-        return stringBuilder.toString()
+        return getResult(stacks)
     }
 
     fun part2(filename: String): String {
@@ -21,51 +24,55 @@ object Day5 {
         val stacks = getInitializedStacks(numberOfColumns, filename)
         File(ClassLoader.getSystemResource(filename).file).forEachLine {
             if (it.startsWith("move")) {
-                stacks.processCrateMover9001(line = it)
+                val lineParts = it.split(" ")
+                stacks.processUsingCrateMover9001(
+                    numberOfCrates = lineParts[1].toInt(),
+                    fromStack = lineParts[3].toInt(),
+                    toStack = lineParts[5].toInt())
             }
         }
+        return getResult(stacks)
+    }
+
+    private fun getResult(stacks: List<Stack<Char>>): String {
         val stringBuilder: StringBuilder = StringBuilder()
         repeat(stacks.size) { i -> stringBuilder.append(stacks[i].pop()) }
         return stringBuilder.toString()
     }
 
-    private fun List<Stack<Char>>.processCrateMover9000(line: String) {
-        val parts = line.split(" ")
-        val numberToMove = parts[1].toInt()
-        val fromStack = parts[3].toInt()
-        val toStack = parts[5].toInt()
-        move(numberToMove, toStack, fromStack)
+    private fun List<Stack<Char>>.processUsingCrateMover9000(numberOfCrates: Int, fromStack: Int, toStack: Int) {
+        move(numberOfCrates, toStack - 1, fromStack - 1)
     }
 
-    private fun List<Stack<Char>>.processCrateMover9001(line: String) {
-        val parts = line.split(" ")
-        val numberToMove = parts[1].toInt()
-        val fromStack = parts[3].toInt()
-        val toStack = parts[5].toInt()
-        multiMove(numberToMove, fromStack, toStack)
+    private fun List<Stack<Char>>.processUsingCrateMover9001(numberOfCrates: Int, fromStack: Int, toStack: Int) {
+        if (numberOfCrates == 1) {
+            move(numberOfCrates, toStack - 1, fromStack - 1)
+        } else {
+            multiMove(numberOfCrates, fromStack - 1, toStack - 1)
+        }
     }
 
     private fun List<Stack<Char>>.move(
         numberToMove: Int,
-        toStack: Int,
-        fromStack: Int
+        toIndex: Int,
+        fromIndex: Int
     ) {
         repeat(numberToMove) {
-            this[toStack - 1].push(this[fromStack - 1].pop())
+            this[toIndex].push(this[fromIndex].pop())
         }
     }
 
     private fun List<Stack<Char>>.multiMove(
-        numberToMove: Int,
-        fromStack: Int,
-        toStack: Int
+        numToMove: Int,
+        fromIndex: Int,
+        toIndex: Int
     ) {
         val tempStack = Stack<Char>()
-        repeat(numberToMove) {
-            tempStack.push(this[fromStack - 1].pop())
+        repeat(numToMove) {
+            tempStack.push(this[fromIndex].pop())
         }
-        repeat(numberToMove) {
-            this[toStack - 1].push(tempStack.pop())
+        repeat(numToMove) {
+            this[toIndex].push(tempStack.pop())
         }
     }
 
