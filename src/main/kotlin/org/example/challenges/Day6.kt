@@ -21,4 +21,8 @@ object Day6 {
         return result
     }
 
+    fun part2(filename: String): Int {
+        TODO("Not yet implemented")
+    }
+
 }
