@@ -1,10 +1,11 @@
 package org.example.challenges
 
+import org.example.Challenge
 import java.io.File
 
-object Day4 {
+object Day4 : Challenge<Int> {
 
-    fun part1(filename: String): Int {
+    override fun part1(filename: String): Int {
         var count = 0
         File(ClassLoader.getSystemResource(filename).file).forEachLine {
             val rawAssignments = it.split(",")
@@ -19,7 +20,7 @@ object Day4 {
         return count
     }
 
-    fun part2(filename: String): Int {
+    override fun part2(filename: String): Int {
         var count = 0
         File(ClassLoader.getSystemResource(filename).file).forEachLine {
             val rawAssignments = it.split(",")

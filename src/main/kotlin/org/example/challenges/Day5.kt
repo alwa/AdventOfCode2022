@@ -1,13 +1,14 @@
 package org.example.challenges
 
+import org.example.Challenge
 import org.example.util.Parser
 import org.example.util.parseAllLinesFromFile
 import java.util.*
 import java.util.regex.Pattern
 
-object Day5 {
+object Day5 : Challenge<String> {
 
-    fun part1(filename: String): String {
+    override fun part1(filename: String): String {
         val lines = filename.parseAllLinesFromFile()
         val stacks = StackDefinitionParser().parse(lines)
         lines.filter { line -> line.isMoveAction() }.forEach { line ->
@@ -17,7 +18,7 @@ object Day5 {
         return getResult(stacks)
     }
 
-    fun part2(filename: String): String {
+    override fun part2(filename: String): String {
         val lines = filename.parseAllLinesFromFile()
         val stacks = StackDefinitionParser().parse(lines)
         lines.filter { line -> line.isMoveAction() }.forEach { line ->

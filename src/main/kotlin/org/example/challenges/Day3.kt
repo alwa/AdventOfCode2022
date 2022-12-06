@@ -1,10 +1,11 @@
 package org.example.challenges
 
+import org.example.Challenge
 import java.io.File
 
-object Day3 {
+object Day3 : Challenge<Int>{
 
-    fun part1(filename: String): Int {
+    override fun part1(filename: String): Int {
         var score = 0
         File(ClassLoader.getSystemResource(filename).file).forEachLine {
             val part1 = it.substring(0, it.length / 2)
@@ -20,7 +21,7 @@ object Day3 {
         return score
     }
 
-    fun part2(filename: String): Int {
+    override fun part2(filename: String): Int {
         var lineCounter = 0
         val lines = mutableListOf("", "", "")
         var score = 0

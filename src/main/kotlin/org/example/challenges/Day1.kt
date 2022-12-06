@@ -1,10 +1,11 @@
 package org.example.challenges
 
+import org.example.Challenge
 import java.io.File
 
-object Day1 {
+object Day1 : Challenge<Int> {
 
-    fun part1(filename: String) : Int  {
+    override fun part1(filename: String): Int {
         var maxSumCalories = 0
         var tempSumCalories = 0
         File(ClassLoader.getSystemResource(filename).file).forEachLine {
@@ -23,7 +24,7 @@ object Day1 {
         return maxSumCalories
     }
 
-    fun part2(filename: String) : Int {
+    override fun part2(filename: String): Int {
         val topThreeSumCalories = mutableListOf(0, 0, 0)
         var tempSumCalories = 0
         File(ClassLoader.getSystemResource(filename).file).forEachLine {
@@ -37,7 +38,7 @@ object Day1 {
         return topThreeSumCalories.replaceIfBiggerThanSmallestInList(tempSumCalories).sum()
     }
 
-    private fun MutableList<Int>.replaceIfBiggerThanSmallestInList(value: Int) : MutableList<Int> {
+    private fun MutableList<Int>.replaceIfBiggerThanSmallestInList(value: Int): MutableList<Int> {
         val minValueInList = this.min()
         if (value > minValueInList) {
             this[this.indexOf(minValueInList)] = value
