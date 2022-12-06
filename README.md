@@ -1,4 +1,4 @@
-# Advent Of Code 2022
+# Advent of Code 2022
 https://adventofcode.com/2022/
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=alwa_AdventOfCode2022&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=alwa_AdventOfCode2022)
