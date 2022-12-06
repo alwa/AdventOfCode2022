@@ -1,22 +1,27 @@
 import org.example.challenges.*
 
+private const val inputFileName = "input.txt"
+
 fun main() {
-    println("=Day 1=")
-    println("Part 1: ${Day1.part1("day1/input.txt")}")
-    println("Part 2: ${Day1.part2("day1/input.txt")}")
-    println("=Day 2=")
-    println("Part 1: ${Day2.part1("day2/input.txt")}")
-    println("Part 2: ${Day2.part2("day2/input.txt")}")
-    println("=Day 3=")
-    println("Part 1: ${Day3.part1("day3/input.txt")}")
-    println("Part 2: ${Day3.part2("day3/input.txt")}")
-    println("=Day 4=")
-    println("Part 1: ${Day4.part1("day4/input.txt")}")
-    println("Part 2: ${Day4.part2("day4/input.txt")}")
-    println("=Day 5=")
-    println("Part 1: ${Day5.part1("day5/input.txt")}")
-    println("Part 2: ${Day5.part2("day5/input.txt")}")
-    println("=Day 6=")
-    println("Part 1: ${Day6.part1("day6/input.txt")}")
-    println("Part 2: ${Day6.part2("day6/input.txt")}")
+    val part1s = listOf(
+        Day1.part1("day1/$inputFileName"),
+        Day2.part1("day2/$inputFileName"),
+        Day3.part1("day3/$inputFileName"),
+        Day4.part1("day4/$inputFileName"),
+        Day5.part1("day5/$inputFileName"),
+        Day6.part1("day6/$inputFileName")
+    )
+    val part2s = listOf(
+        Day1.part2("day1/$inputFileName"),
+        Day2.part2("day2/$inputFileName"),
+        Day3.part2("day3/$inputFileName"),
+        Day4.part2("day4/$inputFileName"),
+        Day5.part2("day5/$inputFileName"),
+        Day6.part2("day6/$inputFileName")
+    )
+    for (i in 1..6) {
+        println("=Day $i=")
+        println("Part 1: ${part1s[i - 1]}")
+        println("Part 2: ${part2s[i - 1]}")
+    }
 }
