@@ -1,14 +1,14 @@
 package org.example.challenges
 
 import org.example.util.Parser
-import java.io.File
+import org.example.util.parseAllLinesFromFile
 import java.util.*
 import java.util.regex.Pattern
 
 object Day5 {
 
     fun part1(filename: String): String {
-        val lines = parseAllLines(filename)
+        val lines = filename.parseAllLinesFromFile()
         val stacks = StackDefinitionParser().parse(lines)
         lines.filter { line -> line.isMoveAction() }.forEach { line ->
             val moveData = MoveParser().parse(line)
@@ -18,7 +18,7 @@ object Day5 {
     }
 
     fun part2(filename: String): String {
-        val lines = parseAllLines(filename)
+        val lines = filename.parseAllLinesFromFile()
         val stacks = StackDefinitionParser().parse(lines)
         lines.filter { line -> line.isMoveAction() }.forEach { line ->
             val moveData = MoveParser().parse(line)
@@ -45,14 +45,6 @@ object Day5 {
         val tempStack = Stack<Char>()
         repeat(times = times) { tempStack.push(this[fromIndex].pop()) }
         repeat(times = times) { this[toIndex].push(tempStack.pop()) }
-    }
-
-    private fun parseAllLines(filename: String): List<String> {
-        val result: MutableList<String> = mutableListOf()
-        File(ClassLoader.getSystemResource(filename).file).forEachLine { line ->
-            result.add(line)
-        }
-        return result
     }
 
     private class CrateMover9000MoveStrategy : MoveStrategy<Char> {
@@ -133,7 +125,7 @@ object Day5 {
 
     private fun List<Stack<Char>>.process(
         moveData: MoveData,
-        strategy: Day5.MoveStrategy<Char>
+        strategy: MoveStrategy<Char>
     ) {
         strategy.move(
             stacks = this@process,
