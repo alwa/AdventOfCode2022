@@ -1,12 +1,12 @@
 package org.example.challenges
 
-import org.example.Challenge
+import org.example.TwoPartChallenge
 import org.example.util.Parser
 import org.example.util.parseAllLinesFromFile
 import java.util.*
 import java.util.regex.Pattern
 
-object Day5 : Challenge<String> {
+object Day5 : TwoPartChallenge<String> {
 
     override fun part1(filename: String): String {
         val lines = filename.parseAllLinesFromFile()

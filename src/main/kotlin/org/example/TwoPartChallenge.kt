@@ -1,6 +1,6 @@
 package org.example
 
-interface Challenge<T> {
+interface TwoPartChallenge<T> {
 
     fun part1(filename: String): T
 

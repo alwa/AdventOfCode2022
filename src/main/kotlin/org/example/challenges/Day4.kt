@@ -1,9 +1,9 @@
 package org.example.challenges
 
-import org.example.Challenge
+import org.example.TwoPartChallenge
 import java.io.File
 
-object Day4 : Challenge<Int> {
+object Day4 : TwoPartChallenge<Int> {
 
     override fun part1(filename: String): Int {
         var count = 0
