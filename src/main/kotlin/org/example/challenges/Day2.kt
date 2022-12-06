@@ -5,9 +5,9 @@ import java.io.File
 
 object Day2 : TwoPartChallenge<Int> {
 
-    override fun part1(filename: String): Int {
+    override fun part1(file: File): Int {
         var score = 0
-        File(ClassLoader.getSystemResource(filename).file).forEachLine {
+        file.forEachLine {
             val scores = it.split(" ")
             val hand = getHand(scores[1].toCharArray()[0])
             val opponentHand = getHand(scores[0].toCharArray()[0])
@@ -17,9 +17,9 @@ object Day2 : TwoPartChallenge<Int> {
         return score
     }
 
-    override fun part2(filename: String): Int {
+    override fun part2(file: File): Int {
         var score = 0
-        File(ClassLoader.getSystemResource(filename).file).forEachLine {
+        file.forEachLine {
             val scores = it.split(" ")
             val opponentHand = getHand(scores[0].toCharArray()[0])
             val result = getResult(scores[1].toCharArray()[0])

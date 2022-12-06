@@ -5,9 +5,9 @@ import java.io.File
 
 object Day3 : TwoPartChallenge<Int>{
 
-    override fun part1(filename: String): Int {
+    override fun part1(file: File): Int {
         var score = 0
-        File(ClassLoader.getSystemResource(filename).file).forEachLine {
+       file.forEachLine {
             val part1 = it.substring(0, it.length / 2)
             val part2 = it.substring(it.length / 2)
             for (character in part1) {
@@ -21,11 +21,11 @@ object Day3 : TwoPartChallenge<Int>{
         return score
     }
 
-    override fun part2(filename: String): Int {
+    override fun part2(file: File): Int {
         var lineCounter = 0
         val lines = mutableListOf("", "", "")
         var score = 0
-        File(ClassLoader.getSystemResource(filename).file).forEachLine {
+        file.forEachLine {
             lines[lineCounter] = it
             lineCounter++
             if (lineCounter == 3) {

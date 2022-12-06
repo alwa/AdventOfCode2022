@@ -5,10 +5,10 @@ import java.io.File
 
 object Day1 : TwoPartChallenge<Int> {
 
-    override fun part1(filename: String): Int {
+    override fun part1(file: File): Int {
         var maxSumCalories = 0
         var tempSumCalories = 0
-        File(ClassLoader.getSystemResource(filename).file).forEachLine {
+        file.forEachLine {
             if (it.isNotEmpty()) {
                 tempSumCalories += it.toInt()
             } else {
@@ -24,10 +24,10 @@ object Day1 : TwoPartChallenge<Int> {
         return maxSumCalories
     }
 
-    override fun part2(filename: String): Int {
+    override fun part2(file: File): Int {
         val topThreeSumCalories = mutableListOf(0, 0, 0)
         var tempSumCalories = 0
-        File(ClassLoader.getSystemResource(filename).file).forEachLine {
+        file.forEachLine {
             if (it.isNotEmpty()) {
                 tempSumCalories += it.toInt()
             } else {

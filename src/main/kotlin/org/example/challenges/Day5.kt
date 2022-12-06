@@ -3,13 +3,14 @@ package org.example.challenges
 import org.example.TwoPartChallenge
 import org.example.util.Parser
 import org.example.util.parseAllLinesFromFile
+import java.io.File
 import java.util.*
 import java.util.regex.Pattern
 
 object Day5 : TwoPartChallenge<String> {
 
-    override fun part1(filename: String): String {
-        val lines = filename.parseAllLinesFromFile()
+    override fun part1(file: File): String {
+        val lines = file.parseAllLinesFromFile()
         val stacks = StackDefinitionParser().parse(lines)
         lines.filter { line -> line.isMoveAction() }.forEach { line ->
             val moveData = MoveParser().parse(line)
@@ -18,8 +19,8 @@ object Day5 : TwoPartChallenge<String> {
         return getResult(stacks)
     }
 
-    override fun part2(filename: String): String {
-        val lines = filename.parseAllLinesFromFile()
+    override fun part2(file: File): String {
+        val lines = file.parseAllLinesFromFile()
         val stacks = StackDefinitionParser().parse(lines)
         lines.filter { line -> line.isMoveAction() }.forEach { line ->
             val moveData = MoveParser().parse(line)

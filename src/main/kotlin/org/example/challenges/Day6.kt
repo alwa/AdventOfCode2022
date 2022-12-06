@@ -5,17 +5,17 @@ import java.io.File
 
 object Day6 : TwoPartChallenge<Int> {
 
-    override fun part1(filename: String): Int {
+    override fun part1(file: File): Int {
         var result = -1
-        File(ClassLoader.getSystemResource(filename).file).forEachLine { line ->
+        file.forEachLine { line ->
             result = getStartOfMessageMarker(input = line, numberOfCharacters = 4)
         }
         return result
     }
 
-    override fun part2(filename: String): Int {
+    override fun part2(file: File): Int {
         var result = -1
-        File(ClassLoader.getSystemResource(filename).file).forEachLine { line ->
+        file.forEachLine { line ->
             result = getStartOfMessageMarker(input = line, numberOfCharacters = 14)
         }
         return result
