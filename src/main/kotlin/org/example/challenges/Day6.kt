@@ -21,7 +21,7 @@ object Day6 {
     }
 
     private fun getStartOfMessageMarker(input: String, numberOfCharacters: Int): Int {
-        var result = 0
+        var result = -1
         for (i in 0..input.length) {
             val set: MutableSet<Char> = mutableSetOf()
             repeat(numberOfCharacters) { count -> set.add(input[i + count]) }
