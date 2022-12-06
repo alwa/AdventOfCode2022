@@ -18,5 +18,5 @@ fun main() {
     println("Part 2: ${Day5.part2("day5/input.txt")}")
     println("=Day 6=")
     println("Part 1: ${Day6.part1("day6/input.txt")}")
-    println("Part 1: ${Day6.part2("day6/input.txt")}")
+    println("Part 2: ${Day6.part2("day6/input.txt")}")
 }
