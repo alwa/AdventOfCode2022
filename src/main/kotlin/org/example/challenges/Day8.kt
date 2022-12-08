@@ -10,7 +10,6 @@ object Day8 : TwoPartChallenge<Int> {
         var visibleCount = 0
         val heightGrid = getGrid(file)
         val visibilityGrid = Array(heightGrid.size) { BooleanArray(heightGrid[0].size) }
-
         for (i in heightGrid.indices) {
             heightGrid[i].forEachIndexed { j, currentTreeHeight ->
                 if (i == 0 || i == heightGrid.size - 1 || j == 0 || j == heightGrid[i].size - 1) {
@@ -24,7 +23,7 @@ object Day8 : TwoPartChallenge<Int> {
                         visibilityGrid[i][j] = true
                         ++visibleCount
                     } else {
-                        for (gridIndices in 0..i-1) {
+                        for (gridIndices in 0 until i) {
                             if (heightGrid[gridIndices][j] >= heightGrid[i][j]) {
                                 break
                             }
@@ -51,6 +50,10 @@ object Day8 : TwoPartChallenge<Int> {
         return visibleCount
     }
 
+    override fun part2(file: File): Int {
+        TODO("Not yet implemented")
+    }
+
     private fun getGrid(file: File): Array<IntArray> {
         val allLines = file.parseAllLinesFromFile()
         val grid = Array(allLines.size) { IntArray(allLines[0].length) }
@@ -60,10 +63,6 @@ object Day8 : TwoPartChallenge<Int> {
             }
         }
         return grid
-    }
-
-    override fun part2(file: File): Int {
-        TODO("Not yet implemented")
     }
 
 }

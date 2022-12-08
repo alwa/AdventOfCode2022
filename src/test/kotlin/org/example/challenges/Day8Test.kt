@@ -11,4 +11,9 @@ class Day8Test {
         assertEquals(21, Day8.part1(File(ClassLoader.getSystemResource("day8/testinput.txt").file)))
     }
 
+    @Test
+    fun `Part 2`() {
+        assertEquals(8, Day8.part2(File(ClassLoader.getSystemResource("day8/testinput.txt").file)))
+    }
+
 }
