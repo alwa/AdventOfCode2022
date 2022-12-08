@@ -6,8 +6,10 @@ import java.io.File
 object Day7 : TwoPartChallenge<Int> {
 
     override fun part1(file: File): Int {
-        val root = VirtualDirectory(parent = null, name = "/", mutableSetOf(), mutableSetOf())
+        val root = VirtualDirectory(parent = null, name = "/", mutableListOf(), mutableListOf())
         var currentDir = root
+
+        val files: MutableList<VirtualFile> = mutableListOf()
         file.forEachLine { line ->
             val lineParts = line.split(" ")
             if (lineParts[0] == "$") {
@@ -38,23 +40,36 @@ object Day7 : TwoPartChallenge<Int> {
                             VirtualDirectory(
                                 parent = currentDir,
                                 name = directoryName,
-                                subDirectories = mutableSetOf(),
-                                files = mutableSetOf()
+                                subDirectories = mutableListOf(),
+                                files = mutableListOf()
                             )
                         )
                     }
                 } else {
                     val existingFile = currentDir.subDirectories.find { it.name == lineParts[1] }
                     if (existingFile == null) {
-                        currentDir.files.add(
+                        val virtualFile =
                             VirtualFile(parent = currentDir, name = lineParts[1], size = lineParts[0].toInt())
-                        )
+                        var tempDir: VirtualDirectory? = currentDir
+                        while (tempDir != null) {
+                            tempDir.size += virtualFile.size
+                            tempDir = tempDir.parent
+                        }
+                        currentDir.files.add(virtualFile)
+                        files.add(virtualFile)
                     }
                 }
             }
         }
 
-        return root.size()
+        val allNodes = root.nodesList(root)
+            .filterIsInstance<VirtualDirectory>()
+            .filter { it.size() < 100_000 }
+        var sum = 0
+        for (node in allNodes) {
+            sum += node.size()
+        }
+        return sum
     }
 
     override fun part2(file: File): Int {
@@ -64,60 +79,57 @@ object Day7 : TwoPartChallenge<Int> {
     class VirtualDirectory(
         val parent: VirtualDirectory? = null,
         val name: String,
-        val subDirectories: MutableSet<VirtualDirectory> = mutableSetOf(),
-        val files: MutableSet<VirtualFile> = mutableSetOf()
-    ) {
+        val subDirectories: MutableList<VirtualDirectory> = mutableListOf(),
+        val files: MutableList<VirtualFile> = mutableListOf(),
+        var size: Int = 0
+    ) : Node {
 
-        fun size(): Int {
-            var subDirSize = 0
-            var fileSize = 0
-            for (subDirectory in subDirectories) {
-                subDirSize += subDirectory.size()
-            }
-            for (file in files) {
-                fileSize += file.size
-            }
-            val currentDirSum = subDirSize + fileSize
-            return if (currentDirSum > 100_000) {
-                subDirSize
-            } else {
-                currentDirSum + subDirSize
-            }
+//        fun calculate() {
+//            var tooBig: Boolean = false
+//            var subDirSize = 0
+//            var fileSize = 0
+//            for (subDirectory in subDirectories) {
+//                val subDirPairSize = subDirectory.calculate()
+//                if (subDirPairSize.first) {
+//                    tooBig = true
+//                }
+//                subDirSize += subDirPairSize.second
+//            }
+//            for (file in files) {
+//                fileSize += file.size
+//            }
+//            size = subDirSize + fileSize
+//            if (size > 100_000) {
+//                tooBig = true
+//            }
+//            return Pair(tooBig, size)
+//        }
+
+
+        fun nodesList(rootRef: Node): List<Node> {
+            return rootRef.children()
+                .map { nodesList(it) }
+                .flatten() + rootRef
         }
 
-        override fun equals(other: Any?): Boolean {
-            if (this === other) return true
-            if (javaClass != other?.javaClass) return false
+        override fun size(): Int = size
 
-            other as VirtualDirectory
-
-            if (name != other.name) return false
-
-            return true
-        }
-
-        override fun hashCode(): Int {
-            return name.hashCode()
-        }
+        override fun children(): List<Node> = subDirectories + files
 
     }
 
-    class VirtualFile(val parent: VirtualDirectory? = null, val name: String, val size: Int) {
+    class VirtualFile(val parent: VirtualDirectory? = null, val name: String, val size: Int) : Node {
+        override fun size(): Int = size
 
-        override fun equals(other: Any?): Boolean {
-            if (this === other) return true
-            if (javaClass != other?.javaClass) return false
+        override fun children(): List<Node> = emptyList()
 
-            other as VirtualFile
+    }
 
-            if (name != other.name) return false
+    interface Node {
 
-            return true
-        }
+        fun size(): Int
+        fun children(): List<Node>
 
-        override fun hashCode(): Int {
-            return name.hashCode()
-        }
     }
 
 }
