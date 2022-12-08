@@ -8,18 +8,42 @@ object Day8 : TwoPartChallenge<Int> {
 
     override fun part1(file: File): Int {
         var visibleCount = 0
-        val grid = getGrid(file)
-        val visibilityGrid = Array(grid.size) { BooleanArray(grid[0].size) }
+        val heightGrid = getGrid(file)
+        val visibilityGrid = Array(heightGrid.size) { BooleanArray(heightGrid[0].size) }
 
-        for (i in grid.indices) {
-            grid[i].forEachIndexed { j, currentTreeHeight ->
-                if (i == 0 || i == grid.size - 1) {
+        for (i in heightGrid.indices) {
+            heightGrid[i].forEachIndexed { j, currentTreeHeight ->
+                if (i == 0 || i == heightGrid.size - 1 || j == 0 || j == heightGrid[i].size - 1) {
                     visibilityGrid[i][j] = true
                     ++visibleCount
                 } else {
-                    if (j == 0 || j == grid[i].size - 1 || grid[i][j - 1] < currentTreeHeight || grid[i][j + 1] < currentTreeHeight) {
+                    if(heightGrid[i].sliceArray(IntRange(0, j-1)).all { value -> value < currentTreeHeight }) {
                         visibilityGrid[i][j] = true
                         ++visibleCount
+                    } else if (heightGrid[i].sliceArray(IntRange(j+1, heightGrid[i].size-1)).all { value -> value < currentTreeHeight }) {
+                        visibilityGrid[i][j] = true
+                        ++visibleCount
+                    } else {
+                        for (gridIndices in 0..i-1) {
+                            if (heightGrid[gridIndices][j] >= heightGrid[i][j]) {
+                                break
+                            }
+                            if (gridIndices == i-1) {
+                                visibilityGrid[i][j] = true
+                                ++visibleCount
+                            }
+                        }
+                        if (!visibilityGrid[i][j]) {
+                            for (gridIndices in i+1 until heightGrid.size) {
+                                if (heightGrid[gridIndices][j] >= heightGrid[i][j]) {
+                                    break
+                                }
+                                if (gridIndices == heightGrid.size-1) {
+                                    visibilityGrid[i][j] = true
+                                    ++visibleCount
+                                }
+                            }
+                        }
                     }
                 }
             }
