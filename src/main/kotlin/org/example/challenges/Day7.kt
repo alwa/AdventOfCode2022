@@ -2,11 +2,36 @@ package org.example.challenges
 
 import org.example.TwoPartChallenge
 import java.io.File
+import java.util.*
 
 object Day7 : TwoPartChallenge<Int> {
 
     override fun part1(file: File): Int {
         val root = VirtualDirectory(parent = null, name = "/", mutableListOf(), mutableListOf())
+        val allNodes = allNodes(file, root)
+            .filterIsInstance<VirtualDirectory>()
+            .filter { it.size() < 100_000 }
+        var sum = 0
+        for (node in allNodes) {
+            sum += node.size()
+        }
+        return sum
+    }
+
+    override fun part2(file: File): Int {
+        val root = VirtualDirectory(parent = null, name = "/", mutableListOf(), mutableListOf())
+        val allNodes = allNodes(file, root)
+            .filterIsInstance<VirtualDirectory>()
+        val directorySizes : SortedSet<Int> = sortedSetOf()
+        for (node in allNodes) {
+            directorySizes.add(node.size())
+        }
+        val maxSpace = 70_000_000 - 30_000_000
+        val spaceToSave =  root.size - maxSpace
+        return directorySizes.find { it -> it.toInt() > spaceToSave } ?: -1
+    }
+
+    private fun allNodes(file: File, root: VirtualDirectory): List<Node> {
         var currentDir = root
 
         val files: MutableList<VirtualFile> = mutableListOf()
@@ -62,18 +87,7 @@ object Day7 : TwoPartChallenge<Int> {
             }
         }
 
-        val allNodes = root.nodesList(root)
-            .filterIsInstance<VirtualDirectory>()
-            .filter { it.size() < 100_000 }
-        var sum = 0
-        for (node in allNodes) {
-            sum += node.size()
-        }
-        return sum
-    }
-
-    override fun part2(file: File): Int {
-        return -1
+        return root.nodesList(root)
     }
 
     class VirtualDirectory(
@@ -83,28 +97,6 @@ object Day7 : TwoPartChallenge<Int> {
         val files: MutableList<VirtualFile> = mutableListOf(),
         var size: Int = 0
     ) : Node {
-
-//        fun calculate() {
-//            var tooBig: Boolean = false
-//            var subDirSize = 0
-//            var fileSize = 0
-//            for (subDirectory in subDirectories) {
-//                val subDirPairSize = subDirectory.calculate()
-//                if (subDirPairSize.first) {
-//                    tooBig = true
-//                }
-//                subDirSize += subDirPairSize.second
-//            }
-//            for (file in files) {
-//                fileSize += file.size
-//            }
-//            size = subDirSize + fileSize
-//            if (size > 100_000) {
-//                tooBig = true
-//            }
-//            return Pair(tooBig, size)
-//        }
-
 
         fun nodesList(rootRef: Node): List<Node> {
             return rootRef.children()
