@@ -23,8 +23,10 @@ object Day9 : TwoPartChallenge<Int> {
                     Coordinate(head.x - 1, head.y)
                 } else if (parts[0] == "U") {
                     Coordinate(head.x, head.y + 1)
-                } else {
+                } else if (parts[0] == "D") {
                     Coordinate(head.x, head.y - 1)
+                } else {
+                    throw IllegalStateException()
                 }
                 if (head.x == tail.x && abs(head.y - tail.y) > 1) {
                     // Y move
