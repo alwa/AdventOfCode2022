@@ -43,6 +43,8 @@ object Day9 : TwoPartChallenge<Int> {
                     val newY = tail.y + (head.y - tail.y) / abs(head.y - tail.y)
                     tail = Coordinate(x = newX, y = newY)
                 }
+                positionsHeadHasVisited.add(head)
+                positionsTailHasVisited.add(tail)
             }
         }
         return positionsTailHasVisited.size
