@@ -22,8 +22,7 @@ object Day7 : TwoPartChallenge<Int, Int> {
 
     override fun part2(file: File): Int {
         val root = VirtualDirectory(parent = null, name = "/", mutableListOf(), mutableListOf())
-        val allNodes = allNodes(file, root)
-            .filterIsInstance<VirtualDirectory>()
+        val allNodes = allNodes(file, root).filterIsInstance<VirtualDirectory>()
         val directorySizes: SortedSet<Int> = sortedSetOf()
         for (node in allNodes) {
             directorySizes.add(node.size())
