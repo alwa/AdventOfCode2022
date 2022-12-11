@@ -11,4 +11,17 @@ class Day10Test {
         assertEquals(13140, Day10.part1(File(ClassLoader.getSystemResource("day10/testinput.txt").file)))
     }
 
+    @Test
+    fun `Part 2`() {
+        assertEquals(
+            "##..##..##..##..##..##..##..##..##..##..\n" +
+                    "###...###...###...###...###...###...###.\n" +
+                    "####....####....####....####....####....\n" +
+                    "#####.....#####.....#####.....#####.....\n" +
+                    "######......######......######......####\n" +
+                    "#######.......#######.......#######.....\n",
+            Day10.part2(File(ClassLoader.getSystemResource("day10/testinput.txt").file))
+        )
+    }
+
 }

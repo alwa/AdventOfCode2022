@@ -4,7 +4,7 @@ import org.example.TwoPartChallenge
 import org.example.util.parseAllLinesFromFile
 import java.io.File
 
-object Day8 : TwoPartChallenge<Int> {
+object Day8 : TwoPartChallenge<Int, Int> {
 
     override fun part1(file: File): Int {
         var visibleCount = 0

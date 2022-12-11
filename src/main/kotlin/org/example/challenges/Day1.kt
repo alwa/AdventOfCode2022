@@ -3,7 +3,7 @@ package org.example.challenges
 import org.example.TwoPartChallenge
 import java.io.File
 
-object Day1 : TwoPartChallenge<Int> {
+object Day1 : TwoPartChallenge<Int, Int> {
 
     override fun part1(file: File): Int {
         var maxSumCalories = 0

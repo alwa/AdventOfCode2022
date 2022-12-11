@@ -4,7 +4,7 @@ import org.example.TwoPartChallenge
 import java.io.File
 import kotlin.math.abs
 
-object Day9 : TwoPartChallenge<Int> {
+object Day9 : TwoPartChallenge<Int, Int> {
 
     override fun part1(file: File): Int {
         var head = Coordinate(x = 0, y = 0)

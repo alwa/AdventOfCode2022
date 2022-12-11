@@ -7,7 +7,7 @@ import java.io.File
 import java.util.*
 import java.util.regex.Pattern
 
-object Day5 : TwoPartChallenge<String> {
+object Day5 : TwoPartChallenge<String, String> {
 
     override fun part1(file: File): String {
         val lines = file.parseAllLinesFromFile()

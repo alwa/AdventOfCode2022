@@ -4,7 +4,7 @@ import org.example.TwoPartChallenge
 import java.io.File
 import java.util.*
 
-object Day7 : TwoPartChallenge<Int> {
+object Day7 : TwoPartChallenge<Int, Int> {
 
     override fun part1(file: File): Int {
         val root = VirtualDirectory(parent = null, name = "/", mutableListOf(), mutableListOf())
