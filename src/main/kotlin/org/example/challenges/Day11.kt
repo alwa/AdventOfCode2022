@@ -68,9 +68,9 @@ object Day11 : TwoPartChallenge<Int, Int> {
                     val worryAfterInspection: Int = monkey.operation.invoke(inspectedItem)
                     val worryAfterBored: Int = worryAfterInspection / 3
                     if (worryAfterBored % monkey.test == 0) {
-                        monkeys[monkey.ifTrue].startingItems.push(worryAfterBored)
+                        monkeys[monkey.ifTrue].startingItems.add(0, worryAfterBored)
                     } else {
-                        monkeys[monkey.ifFalse].startingItems.push(worryAfterBored)
+                        monkeys[monkey.ifFalse].startingItems.add(0, worryAfterBored)
                     }
                 }
             }
