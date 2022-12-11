@@ -22,12 +22,12 @@ object Day7 : TwoPartChallenge<Int, Int> {
         val root = VirtualDirectory(parent = null, name = "/", mutableListOf(), mutableListOf())
         val allNodes = allNodes(file, root)
             .filterIsInstance<VirtualDirectory>()
-        val directorySizes : SortedSet<Int> = sortedSetOf()
+        val directorySizes: SortedSet<Int> = sortedSetOf()
         for (node in allNodes) {
             directorySizes.add(node.size())
         }
         val maxSpace = 70_000_000 - 30_000_000
-        val spaceToSave =  root.size - maxSpace
+        val spaceToSave = root.size - maxSpace
         return directorySizes.find { it -> it.toInt() > spaceToSave } ?: -1
     }
 
@@ -73,8 +73,7 @@ object Day7 : TwoPartChallenge<Int, Int> {
                 } else {
                     val existingFile = currentDir.subDirectories.find { it.name == lineParts[1] }
                     if (existingFile == null) {
-                        val virtualFile =
-                            VirtualFile(parent = currentDir, name = lineParts[1], size = lineParts[0].toInt())
+                        val virtualFile = VirtualFile(size = lineParts[0].toInt())
                         var tempDir: VirtualDirectory? = currentDir
                         while (tempDir != null) {
                             tempDir.size += virtualFile.size
@@ -110,7 +109,7 @@ object Day7 : TwoPartChallenge<Int, Int> {
 
     }
 
-    class VirtualFile(val parent: VirtualDirectory? = null, val name: String, val size: Int) : Node {
+    class VirtualFile(val size: Int) : Node {
         override fun size(): Int = size
 
         override fun children(): List<Node> = emptyList()
