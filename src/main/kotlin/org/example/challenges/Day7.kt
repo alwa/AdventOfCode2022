@@ -29,7 +29,7 @@ object Day7 : TwoPartChallenge<Int, Int> {
             directorySizes.add(node.size())
         }
         val spaceToSave = root.size - MAX_SPACE
-        return directorySizes.find { it -> it.toInt() > spaceToSave } ?: -1
+        return directorySizes.find { it.toInt() > spaceToSave } ?: -1
     }
 
     private fun allNodes(file: File, root: VirtualDirectory): List<Node> {
