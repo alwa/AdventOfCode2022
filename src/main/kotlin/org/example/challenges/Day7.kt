@@ -24,9 +24,7 @@ object Day7 : TwoPartChallenge<Int, Int> {
         val root = VirtualDirectory(parent = null, name = "/", mutableListOf(), mutableListOf())
         val allNodes = allNodes(file, root).filterIsInstance<VirtualDirectory>()
         val directorySizes: SortedSet<Int> = sortedSetOf()
-        for (node in allNodes) {
-            directorySizes.add(node.size())
-        }
+        allNodes.forEach { node -> directorySizes.add(node.size()) }
         val spaceToSave = root.size - MAX_SPACE
         return directorySizes.find { it.toInt() > spaceToSave } ?: -1
     }
