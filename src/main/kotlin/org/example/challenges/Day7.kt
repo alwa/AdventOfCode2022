@@ -6,6 +6,8 @@ import java.util.*
 
 object Day7 : TwoPartChallenge<Int, Int> {
 
+    private const val MAX_SPACE = 70_000_000 - 30_000_000
+
     override fun part1(file: File): Int {
         val root = VirtualDirectory(parent = null, name = "/", mutableListOf(), mutableListOf())
         val allNodes = allNodes(file, root)
@@ -26,8 +28,7 @@ object Day7 : TwoPartChallenge<Int, Int> {
         for (node in allNodes) {
             directorySizes.add(node.size())
         }
-        val maxSpace = 70_000_000 - 30_000_000
-        val spaceToSave = root.size - maxSpace
+        val spaceToSave = root.size - MAX_SPACE
         return directorySizes.find { it -> it.toInt() > spaceToSave } ?: -1
     }
 
