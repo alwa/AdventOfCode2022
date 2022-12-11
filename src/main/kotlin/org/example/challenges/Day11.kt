@@ -11,7 +11,7 @@ object Day11 : TwoPartChallenge<Int, Int> {
         var startingItems: Stack<Int> = Stack()
         var operation: (Int) -> Int = { it }
         var test = 0
-        var ifTrueMonkey: Int = 0
+        var ifTrueMonkey = 0
         var ifFalseMonkey: Int
         file.forEachLine { line ->
             if (line.trimStart().startsWith("Starting items:")) {
