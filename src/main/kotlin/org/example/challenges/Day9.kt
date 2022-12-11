@@ -17,17 +17,7 @@ object Day9 : TwoPartChallenge<Int, Int> {
             for (i in 0 until steps) {
                 positionsHeadHasVisited.add(head)
                 positionsTailHasVisited.add(tail)
-                head = if (parts[0] == "R") {
-                    Coordinate(head.x + 1, head.y)
-                } else if (parts[0] == "L") {
-                    Coordinate(head.x - 1, head.y)
-                } else if (parts[0] == "U") {
-                    Coordinate(head.x, head.y + 1)
-                } else if (parts[0] == "D") {
-                    Coordinate(head.x, head.y - 1)
-                } else {
-                    throw IllegalStateException()
-                }
+                head = getNewHead(head, parts)
                 tail = followHead(head, tail)
                 positionsHeadHasVisited.add(head)
                 positionsTailHasVisited.add(tail)
@@ -81,17 +71,7 @@ object Day9 : TwoPartChallenge<Int, Int> {
             for (i in 0 until steps) {
                 positionsHeadHasVisited.add(head)
                 positionsTailHasVisited.add(tail[8])
-                head = if (parts[0] == "R") {
-                    Coordinate(head.x + 1, head.y)
-                } else if (parts[0] == "L") {
-                    Coordinate(head.x - 1, head.y)
-                } else if (parts[0] == "U") {
-                    Coordinate(head.x, head.y + 1)
-                } else if (parts[0] == "D") {
-                    Coordinate(head.x, head.y - 1)
-                } else {
-                    throw IllegalStateException()
-                }
+                head = getNewHead(head, parts)
                 tail[0] = followHead(head, tail[0])
                 for (j in 0  until 8) {
                     tail[j+1] = followHead(head = tail[j], tail = tail[j+1])
@@ -101,6 +81,25 @@ object Day9 : TwoPartChallenge<Int, Int> {
             }
         }
         return positionsTailHasVisited.size
+    }
+
+    private fun getNewHead(
+        head: Coordinate,
+        parts: List<String>
+    ): Coordinate {
+        var head1 = head
+        head1 = if (parts[0] == "R") {
+            Coordinate(head1.x + 1, head1.y)
+        } else if (parts[0] == "L") {
+            Coordinate(head1.x - 1, head1.y)
+        } else if (parts[0] == "U") {
+            Coordinate(head1.x, head1.y + 1)
+        } else if (parts[0] == "D") {
+            Coordinate(head1.x, head1.y - 1)
+        } else {
+            throw IllegalStateException()
+        }
+        return head1
     }
 
     private data class Coordinate(val x: Int, val y: Int)
