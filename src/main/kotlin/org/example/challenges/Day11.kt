@@ -15,7 +15,7 @@ object Day11 : TwoPartChallenge<Int, Int> {
         var ifFalseMonkey: Int
         file.forEachLine { line ->
             if (line.trimStart().startsWith("Starting items:")) {
-                val startingItemsRaw = line.substring(line.indexOf(":") + 1).trimStart().split(",")
+                val startingItemsRaw = line.substring(line.indexOf(":") + 1).trimStart().split(",").asReversed()
                 for (startingItem in startingItemsRaw) {
                     startingItems.push(startingItem.trimStart().trimEnd().toInt())
                 }
@@ -68,9 +68,9 @@ object Day11 : TwoPartChallenge<Int, Int> {
                     val worryAfterInspection: Int = monkey.operation.invoke(inspectedItem)
                     val worryAfterBored: Int = worryAfterInspection / 3
                     if (worryAfterBored % monkey.test == 0) {
-                        monkeys[monkey.ifTrue].startingItems.add(0, worryAfterBored)
+                        monkeys[monkey.ifTrue].startingItems.push( worryAfterBored)
                     } else {
-                        monkeys[monkey.ifFalse].startingItems.add(0, worryAfterBored)
+                        monkeys[monkey.ifFalse].startingItems.add( worryAfterBored)
                     }
                 }
             }
